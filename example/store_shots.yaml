@@ -1,0 +1,17 @@
+# Everything here is optional except screens.
+app_name: Basket
+locales: [en, ar]
+devices: [iphone_6_9, android_phone]
+template: aurora
+
+screens:
+  - id: home
+    route: /
+  - id: product
+    route: /product/headphones
+    highlight: { key: add_to_cart, style: ring, label: highlight_add }
+  - id: cart
+    route: /cart
+    highlight: { key: checkout, style: arrow }
+  - id: orders
+    route: /orders
