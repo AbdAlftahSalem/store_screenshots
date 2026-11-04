@@ -1,0 +1,21 @@
+# test_app: exercises go_router, Provider, dark mode, tablets and frame choices.
+app_name: Wallet
+locales: [en, ar]
+devices: [iphone_6_9, iphone_6_3, ipad_13, android_phone, android_tablet_10]
+theme: [light, dark]
+template: midnight
+frames:
+  ios: iphone_air/sky_blue
+  android: galaxy/titanium_silverblue
+status_bar: { time: "9:41", battery: 87 }
+screens:
+  - id: dashboard
+    route: /
+    highlight: { key: send, style: ring, label: highlight_send }
+  - id: activity
+    route: /activity
+  - id: cards
+    route: /cards
+    highlight: { key: online, style: spotlight }
+  - id: insights
+    route: /insights
