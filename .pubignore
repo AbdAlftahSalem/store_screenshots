@@ -1,0 +1,5 @@
+test_app/
+tool/
+build/
+example/build/
+.github/
