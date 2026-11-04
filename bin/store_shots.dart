@@ -88,7 +88,7 @@ Future<void> _run(ArgResults args) async {
   if (!File(testPath).existsSync()) {
     _fail('$testPath not found. Run `dart run store_shots init` to create it, or pass --test <file>.');
   }
-  final env = <String, String>{};
+  final env = <String, String>{if (configPath != 'store_shots.yaml') 'STORE_SHOTS_CONFIG': configPath};
   void filter(String opt, String name) {
     final v = args[opt] as String?;
     if (v != null) env[name] = v == 'all' && opt == 'template' ? kTemplates.join(',') : v;

@@ -21,8 +21,16 @@
 
 ## Quick start
 
+> Not on pub.dev yet (and the name `store_shots` is taken there by an unrelated package), so install it from git for now.
+
+```yaml
+# pubspec.yaml
+dev_dependencies:
+  store_shots:
+    git: https://github.com/AbdAlftahSalem/store_shots
+```
+
 ```bash
-flutter pub add --dev store_shots
 dart run store_shots init     # creates store_shots.yaml, the test file and a caption file
 dart run store_shots          # → build/store_shots/
 ```

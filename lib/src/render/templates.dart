@@ -398,7 +398,7 @@ class ShotComposer extends StatelessWidget {
     final tablet = scene.device.tablet;
     final sidePad = w * (tablet ? 0.1 : 0.075);
     final topPad = h * (tablet ? 0.055 : 0.065);
-    final baseSize = w * (tablet ? 0.058 : 0.083);
+    final baseSize = w * (tablet ? 0.066 : 0.083);
     final children = <Widget>[
       Positioned.fill(
         child: CustomPaint(
@@ -612,7 +612,9 @@ class ShotComposer extends StatelessWidget {
       math.min(shot.logicalWidth, crop.right),
       math.min(shot.logicalHeight, crop.bottom),
     );
-    var calloutW = w * 0.86;
+    // Zoom 1.6–3.5× the widget's size on the device, never wider than 86 %.
+    final onDeviceCropW = cropRect.width * k;
+    var calloutW = math.min(w * 0.86, math.max(onDeviceCropW * 1.6, math.min(onDeviceCropW * 3.5, w * 0.6)));
     var calloutH = calloutW * cropRect.height / cropRect.width;
     if (calloutH > w * 0.75) {
       calloutH = w * 0.75;

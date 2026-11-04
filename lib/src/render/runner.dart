@@ -96,7 +96,8 @@ void storeShots<T>({
 }) {
   final StoreShotsConfig cfg;
   try {
-    cfg = StoreShotsConfig.load(config);
+    // `dart run store_shots --config other.yaml` passes its file through the environment.
+    cfg = StoreShotsConfig.load(Platform.environment['STORE_SHOTS_CONFIG'] ?? config);
   } on ConfigException catch (e) {
     test('store_shots config', () => fail(e.toString()));
     return;
