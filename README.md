@@ -86,6 +86,9 @@ void main() => storeShots(app: (_) => const MyShopApp());
 | **Store-ready output** | Exact store sizes, 24-bit PNG without alpha (both stores reject alpha), fastlane `deliver`/`supply` folders, `gallery.html`, `manifest.json`. |
 | **Light + dark** | `theme: [light, dark]` renders both (your app follows `platformBrightness`). |
 
+<p align="center"><img src="doc/images/devices_themes.jpg" alt="Light and dark, iPhone, iPad, Android phone and tablet" width="100%"></p>
+<p align="center"><sub>From <a href="test_app/">test_app</a>: light + dark, iPhone 6.9", iPad 13", Android phone and 10" tablet, English + Arabic.</sub></p>
+
 ## Templates
 
 | | | | | |
