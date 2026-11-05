@@ -14,6 +14,11 @@ jobs:
         with:
           channel: stable
       - run: flutter pub get
+      # flutter analyze at the root also analyzes test_app/, which is its own
+      # package (Provider + go_router); its dependencies must be resolved first.
+      - name: flutter pub get (test_app)
+        working-directory: test_app
+        run: flutter pub get
       - run: flutter analyze
       - run: flutter test
       - name: Generate example screenshots
