@@ -11,7 +11,13 @@ class Txn {
 }
 
 class WalletCard {
-  const WalletCard(this.holder, this.last4, this.expiry, this.balance, this.colors);
+  const WalletCard(
+    this.holder,
+    this.last4,
+    this.expiry,
+    this.balance,
+    this.colors,
+  );
 
   final String holder;
   final String last4;

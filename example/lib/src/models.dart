@@ -41,7 +41,12 @@ class User {
 
 /// An order on its way.
 class Order {
-  const Order({required this.number, required this.eta, required this.courier, required this.step});
+  const Order({
+    required this.number,
+    required this.eta,
+    required this.courier,
+    required this.step,
+  });
 
   final String number;
   final String eta;

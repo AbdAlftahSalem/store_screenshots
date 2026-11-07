@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:store_shots/src/core/catalog.dart';
-import 'package:store_shots/src/core/devices.dart';
-import 'package:store_shots/src/core/geometry.dart';
+import 'package:store_screenshots/src/core/catalog.dart';
+import 'package:store_screenshots/src/core/devices.dart';
+import 'package:store_screenshots/src/core/geometry.dart';
 
 void main() {
   test('official store sizes (Nov 2026)', () {

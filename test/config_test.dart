@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:store_shots/src/core/catalog.dart';
-import 'package:store_shots/src/core/config.dart';
-import 'package:store_shots/src/core/devices.dart';
+import 'package:store_screenshots/src/core/catalog.dart';
+import 'package:store_screenshots/src/core/config.dart';
+import 'package:store_screenshots/src/core/devices.dart';
 
 void main() {
   group('defaults', () {

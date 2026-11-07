@@ -7,13 +7,25 @@ import 'data.dart';
 import 'models.dart';
 import 'strings.dart';
 
-TextStyle _t(BuildContext c, double size, [FontWeight w = FontWeight.w400, Color? color]) =>
-    TextStyle(fontSize: size, fontWeight: w, color: color ?? Theme.of(c).colorScheme.onSurface, height: 1.25);
+TextStyle _t(
+  BuildContext c,
+  double size, [
+  FontWeight w = FontWeight.w400,
+  Color? color,
+]) => TextStyle(
+  fontSize: size,
+  fontWeight: w,
+  color: color ?? Theme.of(c).colorScheme.onSurface,
+  height: 1.25,
+);
 
-Color _muted(BuildContext c) => Theme.of(c).colorScheme.onSurface.withValues(alpha: 0.55);
+Color _muted(BuildContext c) =>
+    Theme.of(c).colorScheme.onSurface.withValues(alpha: 0.55);
 bool _dark(BuildContext c) => Theme.of(c).brightness == Brightness.dark;
-Color _card(BuildContext c) => _dark(c) ? const Color(0xFF17171F) : Colors.white;
-Color _tile(BuildContext c) => _dark(c) ? const Color(0xFF20202A) : const Color(0xFFF1F1F4);
+Color _card(BuildContext c) =>
+    _dark(c) ? const Color(0xFF17171F) : Colors.white;
+Color _tile(BuildContext c) =>
+    _dark(c) ? const Color(0xFF20202A) : const Color(0xFFF1F1F4);
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -36,7 +48,9 @@ class HomeScreen extends ConsumerWidget {
                   radius: 24,
                   backgroundColor: primary.withValues(alpha: 0.14),
                   child: Text(
-                    (user?.name.isNotEmpty ?? false) ? user!.name.characters.first : '?',
+                    (user?.name.isNotEmpty ?? false)
+                        ? user!.name.characters.first
+                        : '?',
                     style: _t(context, 20, FontWeight.w700, primary),
                   ),
                 ),
@@ -45,8 +59,19 @@ class HomeScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(s.goodMorning, style: _t(context, 13, FontWeight.w400, _muted(context))),
-                      Text(user?.name ?? '', style: _t(context, 19, FontWeight.w700)),
+                      Text(
+                        s.goodMorning,
+                        style: _t(
+                          context,
+                          13,
+                          FontWeight.w400,
+                          _muted(context),
+                        ),
+                      ),
+                      Text(
+                        user?.name ?? '',
+                        style: _t(context, 19, FontWeight.w700),
+                      ),
                     ],
                   ),
                 ),
@@ -60,12 +85,23 @@ class HomeScreen extends ConsumerWidget {
                   child: Container(
                     height: 52,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(
+                      color: _card(context),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: Row(
                       children: [
                         Icon(Icons.search_rounded, color: _muted(context)),
                         const SizedBox(width: 10),
-                        Text(s.search, style: _t(context, 14, FontWeight.w400, _muted(context))),
+                        Text(
+                          s.search,
+                          style: _t(
+                            context,
+                            14,
+                            FontWeight.w400,
+                            _muted(context),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -74,7 +110,10 @@ class HomeScreen extends ConsumerWidget {
                 Container(
                   width: 52,
                   height: 52,
-                  decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(16)),
+                  decoration: BoxDecoration(
+                    color: primary,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: const Icon(Icons.tune_rounded, color: Colors.white),
                 ),
               ],
@@ -99,7 +138,12 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       s.categories[i],
-                      style: _t(c, 14, FontWeight.w600, selected ? Colors.white : null),
+                      style: _t(
+                        c,
+                        14,
+                        FontWeight.w600,
+                        selected ? Colors.white : null,
+                      ),
                     ),
                   );
                 },
@@ -108,8 +152,16 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             Row(
               children: [
-                Expanded(child: Text(s.popular, style: _t(context, 18, FontWeight.w700))),
-                Text(s.seeAll, style: _t(context, 13, FontWeight.w600, primary)),
+                Expanded(
+                  child: Text(
+                    s.popular,
+                    style: _t(context, 18, FontWeight.w700),
+                  ),
+                ),
+                Text(
+                  s.seeAll,
+                  style: _t(context, 13, FontWeight.w600, primary),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -132,13 +184,25 @@ class HomeScreen extends ConsumerWidget {
         selectedIndex: 0,
         height: 68,
         destinations: [
-          NavigationDestination(icon: const Icon(Icons.home_rounded), label: s.home),
-          NavigationDestination(icon: const Icon(Icons.explore_outlined), label: s.explore),
           NavigationDestination(
-            icon: const Badge(label: Text('3'), child: Icon(Icons.shopping_bag_outlined)),
+            icon: const Icon(Icons.home_rounded),
+            label: s.home,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.explore_outlined),
+            label: s.explore,
+          ),
+          NavigationDestination(
+            icon: const Badge(
+              label: Text('3'),
+              child: Icon(Icons.shopping_bag_outlined),
+            ),
             label: s.cart,
           ),
-          NavigationDestination(icon: const Icon(Icons.person_outline_rounded), label: s.profile),
+          NavigationDestination(
+            icon: const Icon(Icons.person_outline_rounded),
+            label: s.profile,
+          ),
         ],
       ),
     );
@@ -183,7 +247,9 @@ class _PromoBanner extends StatelessWidget {
       height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(colors: [Color(0xFF5B4CF0), Color(0xFF9A5CF5)]),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF5B4CF0), Color(0xFF9A5CF5)],
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Stack(
@@ -191,7 +257,10 @@ class _PromoBanner extends StatelessWidget {
           PositionedDirectional(
             end: -30,
             top: -30,
-            child: CircleAvatar(radius: 80, backgroundColor: Colors.white.withValues(alpha: 0.08)),
+            child: CircleAvatar(
+              radius: 80,
+              backgroundColor: Colors.white.withValues(alpha: 0.08),
+            ),
           ),
           if (product != null)
             PositionedDirectional(
@@ -200,7 +269,12 @@ class _PromoBanner extends StatelessWidget {
               bottom: 10,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.asset(product!.image, width: 130, height: 130, fit: BoxFit.cover),
+                child: Image.asset(
+                  product!.image,
+                  width: 130,
+                  height: 130,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           Padding(
@@ -208,14 +282,39 @@ class _PromoBanner extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(s.saleTitle, style: _t(context, 20, FontWeight.w800, Colors.white)),
+                Text(
+                  s.saleTitle,
+                  style: _t(context, 20, FontWeight.w800, Colors.white),
+                ),
                 const SizedBox(height: 4),
-                Text(s.saleBody, style: _t(context, 13, FontWeight.w400, Colors.white.withValues(alpha: 0.85))),
+                Text(
+                  s.saleBody,
+                  style: _t(
+                    context,
+                    13,
+                    FontWeight.w400,
+                    Colors.white.withValues(alpha: 0.85),
+                  ),
+                ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                  child: Text(s.shopNow, style: _t(context, 13, FontWeight.w700, const Color(0xFF5B4CF0))),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    s.shopNow,
+                    style: _t(
+                      context,
+                      13,
+                      FontWeight.w700,
+                      const Color(0xFF5B4CF0),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -237,7 +336,10 @@ class _ProductCard extends StatelessWidget {
     final primary = Theme.of(context).colorScheme.primary;
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        color: _card(context),
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -256,22 +358,41 @@ class _ProductCard extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.favorite_border_rounded, size: 16, color: Colors.grey.shade800),
+                    child: Icon(
+                      Icons.favorite_border_rounded,
+                      size: 16,
+                      color: Colors.grey.shade800,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 8),
-          Text(product.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: _t(context, 14, FontWeight.w600)),
+          Text(
+            product.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: _t(context, 14, FontWeight.w600),
+          ),
           const SizedBox(height: 2),
           Row(
             children: [
-              const Icon(Icons.star_rounded, size: 16, color: Color(0xFFFFB020)),
+              const Icon(
+                Icons.star_rounded,
+                size: 16,
+                color: Color(0xFFFFB020),
+              ),
               const SizedBox(width: 2),
-              Text('${product.rating}', style: _t(context, 12, FontWeight.w500, _muted(context))),
+              Text(
+                '${product.rating}',
+                style: _t(context, 12, FontWeight.w500, _muted(context)),
+              ),
               const Spacer(),
-              Text(s.price(product.price), style: _t(context, 14, FontWeight.w800, primary)),
+              Text(
+                s.price(product.price),
+                style: _t(context, 14, FontWeight.w800, primary),
+              ),
             ],
           ),
         ],
@@ -290,22 +411,32 @@ class ProductScreen extends ConsumerWidget {
     final s = S.of(context);
     final p = ref.watch(productProvider(id)).value;
     final primary = Theme.of(context).colorScheme.primary;
-    if (p == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (p == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
           Stack(
             children: [
-              AspectRatio(aspectRatio: 0.95, child: Image.asset(p.image, fit: BoxFit.cover)),
+              AspectRatio(
+                aspectRatio: 0.95,
+                child: Image.asset(p.image, fit: BoxFit.cover),
+              ),
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Row(
                     children: [
-                      _RoundIcon(icon: Directionality.of(context) == TextDirection.rtl
-                          ? Icons.arrow_forward_rounded
-                          : Icons.arrow_back_rounded),
+                      _RoundIcon(
+                        icon: Directionality.of(context) == TextDirection.rtl
+                            ? Icons.arrow_forward_rounded
+                            : Icons.arrow_back_rounded,
+                      ),
                       const Spacer(),
                       const _RoundIcon(icon: Icons.favorite_rounded),
                     ],
@@ -320,7 +451,9 @@ class ProductScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(22, 24, 22, 8),
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(28),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,23 +463,43 @@ class ProductScreen extends ConsumerWidget {
                   Row(
                     children: [
                       for (var i = 0; i < 5; i++)
-                        Icon(Icons.star_rounded, size: 18, color: i < p.rating.round() ? const Color(0xFFFFB020) : Colors.grey),
+                        Icon(
+                          Icons.star_rounded,
+                          size: 18,
+                          color: i < p.rating.round()
+                              ? const Color(0xFFFFB020)
+                              : Colors.grey,
+                        ),
                       const SizedBox(width: 6),
-                      Text('${p.rating} · ${p.reviews} ${s.reviews}', style: _t(context, 13, FontWeight.w500, _muted(context))),
+                      Text(
+                        '${p.rating} · ${p.reviews} ${s.reviews}',
+                        style: _t(
+                          context,
+                          13,
+                          FontWeight.w500,
+                          _muted(context),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 14),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(s.price(p.price), style: _t(context, 28, FontWeight.w800, primary)),
+                      Text(
+                        s.price(p.price),
+                        style: _t(context, 28, FontWeight.w800, primary),
+                      ),
                       const SizedBox(width: 10),
                       if (p.oldPrice != null)
                         Text(
                           s.price(p.oldPrice!),
-                          style: _t(context, 16, FontWeight.w500, _muted(context)).copyWith(
-                            decoration: TextDecoration.lineThrough,
-                          ),
+                          style: _t(
+                            context,
+                            16,
+                            FontWeight.w500,
+                            _muted(context),
+                          ).copyWith(decoration: TextDecoration.lineThrough),
                         ),
                     ],
                   ),
@@ -366,7 +519,10 @@ class ProductScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(3),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: i == 0 ? primary : Colors.transparent, width: 2),
+                            border: Border.all(
+                              color: i == 0 ? primary : Colors.transparent,
+                              width: 2,
+                            ),
                           ),
                           child: CircleAvatar(radius: 14, backgroundColor: c),
                         ),
@@ -375,7 +531,15 @@ class ProductScreen extends ConsumerWidget {
                   const SizedBox(height: 18),
                   Text(s.description, style: _t(context, 15, FontWeight.w700)),
                   const SizedBox(height: 6),
-                  Text(p.description, style: _t(context, 14, FontWeight.w400, _muted(context)).copyWith(height: 1.55)),
+                  Text(
+                    p.description,
+                    style: _t(
+                      context,
+                      14,
+                      FontWeight.w400,
+                      _muted(context),
+                    ).copyWith(height: 1.55),
+                  ),
                 ],
               ),
             ),
@@ -390,12 +554,21 @@ class ProductScreen extends ConsumerWidget {
               Container(
                 height: 56,
                 padding: const EdgeInsets.symmetric(horizontal: 6),
-                decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(18)),
+                decoration: BoxDecoration(
+                  color: _card(context),
+                  borderRadius: BorderRadius.circular(18),
+                ),
                 child: Row(
                   children: [
-                    const IconButton(onPressed: null, icon: Icon(Icons.remove_rounded)),
+                    const IconButton(
+                      onPressed: null,
+                      icon: Icon(Icons.remove_rounded),
+                    ),
                     Text('1', style: _t(context, 17, FontWeight.w700)),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.add_rounded)),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.add_rounded),
+                    ),
                   ],
                 ),
               ),
@@ -406,9 +579,16 @@ class ProductScreen extends ConsumerWidget {
                   child: FilledButton.icon(
                     key: const ValueKey('add_to_cart'),
                     onPressed: () {},
-                    style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18))),
+                    style: FilledButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
                     icon: const Icon(Icons.shopping_bag_rounded),
-                    label: Text(s.addToCart, style: _t(context, 16, FontWeight.w700, Colors.white)),
+                    label: Text(
+                      s.addToCart,
+                      style: _t(context, 16, FontWeight.w700, Colors.white),
+                    ),
                   ),
                 ),
               ),
@@ -428,7 +608,10 @@ class CartScreen extends ConsumerWidget {
     final s = S.of(context);
     final items = ref.watch(cartProvider).value ?? const [];
     final primary = Theme.of(context).colorScheme.primary;
-    final subtotal = items.fold<double>(0, (a, i) => a + i.product.price * i.quantity);
+    final subtotal = items.fold<double>(
+      0,
+      (a, i) => a + i.product.price * i.quantity,
+    );
     const discount = 10.0;
     return Scaffold(
       appBar: AppBar(
@@ -437,7 +620,10 @@ class CartScreen extends ConsumerWidget {
         title: Column(
           children: [
             Text(s.myCart, style: _t(context, 18, FontWeight.w700)),
-            Text(s.items(items.length), style: _t(context, 12, FontWeight.w400, _muted(context))),
+            Text(
+              s.items(items.length),
+              style: _t(context, 12, FontWeight.w400, _muted(context)),
+            ),
           ],
         ),
       ),
@@ -448,35 +634,68 @@ class CartScreen extends ConsumerWidget {
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(
+                color: _card(context),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: Row(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    child: Image.asset(item.product.image, width: 78, height: 78, fit: BoxFit.cover),
+                    child: Image.asset(
+                      item.product.image,
+                      width: 78,
+                      height: 78,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(item.product.name, style: _t(context, 15, FontWeight.w700), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(
+                          item.product.name,
+                          style: _t(context, 15, FontWeight.w700),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         const SizedBox(height: 2),
-                        Text(item.variant, style: _t(context, 12, FontWeight.w400, _muted(context))),
+                        Text(
+                          item.variant,
+                          style: _t(
+                            context,
+                            12,
+                            FontWeight.w400,
+                            _muted(context),
+                          ),
+                        ),
                         const SizedBox(height: 6),
-                        Text(s.price(item.product.price), style: _t(context, 15, FontWeight.w800, primary)),
+                        Text(
+                          s.price(item.product.price),
+                          style: _t(context, 15, FontWeight.w800, primary),
+                        ),
                       ],
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(color: _tile(context), borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: _tile(context),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 2,
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.remove_rounded, size: 18),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text('${item.quantity}', style: _t(context, 14, FontWeight.w700)),
+                          child: Text(
+                            '${item.quantity}',
+                            style: _t(context, 14, FontWeight.w700),
+                          ),
                         ),
                         const Icon(Icons.add_rounded, size: 18),
                       ],
@@ -489,12 +708,24 @@ class CartScreen extends ConsumerWidget {
           Container(
             height: 56,
             padding: const EdgeInsetsDirectional.only(start: 16, end: 6),
-            decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(16)),
+            decoration: BoxDecoration(
+              color: _card(context),
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Row(
               children: [
-                Icon(Icons.local_offer_outlined, color: _muted(context), size: 20),
+                Icon(
+                  Icons.local_offer_outlined,
+                  color: _muted(context),
+                  size: 20,
+                ),
                 const SizedBox(width: 10),
-                Expanded(child: Text('SUMMER10', style: _t(context, 14, FontWeight.w600))),
+                Expanded(
+                  child: Text(
+                    'SUMMER10',
+                    style: _t(context, 14, FontWeight.w600),
+                  ),
+                ),
                 FilledButton.tonal(onPressed: () {}, child: Text(s.apply)),
               ],
             ),
@@ -502,11 +733,19 @@ class CartScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(
+              color: _card(context),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Column(
               children: [
                 _row(context, s.subtotal, s.price(subtotal)),
-                _row(context, s.shipping, s.free, color: const Color(0xFF16A34A)),
+                _row(
+                  context,
+                  s.shipping,
+                  s.free,
+                  color: const Color(0xFF16A34A),
+                ),
                 _row(context, s.discount, '-${s.price(discount)}'),
                 const Divider(height: 22),
                 _row(context, s.total, s.price(subtotal - discount), big: true),
@@ -523,13 +762,23 @@ class CartScreen extends ConsumerWidget {
             child: FilledButton(
               key: const ValueKey('checkout'),
               onPressed: () {},
-              style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18))),
+              style: FilledButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(s.checkout, style: _t(context, 17, FontWeight.w700, Colors.white)),
+                  Text(
+                    s.checkout,
+                    style: _t(context, 17, FontWeight.w700, Colors.white),
+                  ),
                   const SizedBox(width: 10),
-                  Text('·  ${s.price(subtotal - discount)}', style: _t(context, 17, FontWeight.w500, Colors.white70)),
+                  Text(
+                    '·  ${s.price(subtotal - discount)}',
+                    style: _t(context, 17, FontWeight.w500, Colors.white70),
+                  ),
                 ],
               ),
             ),
@@ -539,12 +788,36 @@ class CartScreen extends ConsumerWidget {
     );
   }
 
-  Widget _row(BuildContext c, String a, String b, {bool big = false, Color? color}) => Padding(
+  Widget _row(
+    BuildContext c,
+    String a,
+    String b, {
+    bool big = false,
+    Color? color,
+  }) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: Row(
       children: [
-        Expanded(child: Text(a, style: _t(c, big ? 17 : 14, big ? FontWeight.w700 : FontWeight.w400, big ? null : _muted(c)))),
-        Text(b, style: _t(c, big ? 20 : 14, big ? FontWeight.w800 : FontWeight.w600, color)),
+        Expanded(
+          child: Text(
+            a,
+            style: _t(
+              c,
+              big ? 17 : 14,
+              big ? FontWeight.w700 : FontWeight.w400,
+              big ? null : _muted(c),
+            ),
+          ),
+        ),
+        Text(
+          b,
+          style: _t(
+            c,
+            big ? 20 : 14,
+            big ? FontWeight.w800 : FontWeight.w600,
+            color,
+          ),
+        ),
       ],
     ),
   );
@@ -558,7 +831,9 @@ class TrackOrderScreen extends ConsumerWidget {
     final s = S.of(context);
     final order = ref.watch(orderProvider).value;
     final primary = Theme.of(context).colorScheme.primary;
-    if (order == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (order == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -570,12 +845,18 @@ class TrackOrderScreen extends ConsumerWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            child: SizedBox(height: 250, child: CustomPaint(painter: _MapPainter(primary, _dark(context)))),
+            child: SizedBox(
+              height: 250,
+              child: CustomPaint(painter: _MapPainter(primary, _dark(context))),
+            ),
           ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(
+              color: _card(context),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -585,42 +866,85 @@ class TrackOrderScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('${s.order} #${order.number}', style: _t(context, 13, FontWeight.w500, _muted(context))),
+                          Text(
+                            '${s.order} #${order.number}',
+                            style: _t(
+                              context,
+                              13,
+                              FontWeight.w500,
+                              _muted(context),
+                            ),
+                          ),
                           const SizedBox(height: 2),
-                          Text('${s.arriving} ${order.eta}', style: _t(context, 19, FontWeight.w800)),
+                          Text(
+                            '${s.arriving} ${order.eta}',
+                            style: _t(context, 19, FontWeight.w800),
+                          ),
                         ],
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(color: primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(14)),
+                      decoration: BoxDecoration(
+                        color: primary.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       child: Icon(Icons.local_shipping_rounded, color: primary),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                for (var i = 0; i < 4; i++) _Step(label: s.steps[i], time: s.stepTimes[i], done: i <= order.step, current: i == order.step, last: i == 3),
+                for (var i = 0; i < 4; i++)
+                  _Step(
+                    label: s.steps[i],
+                    time: s.stepTimes[i],
+                    done: i <= order.step,
+                    current: i == order.step,
+                    last: i == 3,
+                  ),
               ],
             ),
           ),
           const SizedBox(height: 14),
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(color: _card(context), borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(
+              color: _card(context),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 24,
                   backgroundColor: const Color(0xFFFFE2C7),
-                  child: Text(order.courier.characters.first, style: _t(context, 18, FontWeight.w700, const Color(0xFF9A4A00))),
+                  child: Text(
+                    order.courier.characters.first,
+                    style: _t(
+                      context,
+                      18,
+                      FontWeight.w700,
+                      const Color(0xFF9A4A00),
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(s.yourCourier, style: _t(context, 12, FontWeight.w400, _muted(context))),
-                      Text(order.courier, style: _t(context, 16, FontWeight.w700)),
+                      Text(
+                        s.yourCourier,
+                        style: _t(
+                          context,
+                          12,
+                          FontWeight.w400,
+                          _muted(context),
+                        ),
+                      ),
+                      Text(
+                        order.courier,
+                        style: _t(context, 16, FontWeight.w700),
+                      ),
                     ],
                   ),
                 ),
@@ -629,8 +953,15 @@ class TrackOrderScreen extends ConsumerWidget {
                 Container(
                   width: 46,
                   height: 46,
-                  decoration: BoxDecoration(color: primary, shape: BoxShape.circle),
-                  child: const Icon(Icons.call_rounded, color: Colors.white, size: 22),
+                  decoration: BoxDecoration(
+                    color: primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.call_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
               ],
             ),
@@ -642,7 +973,13 @@ class TrackOrderScreen extends ConsumerWidget {
 }
 
 class _Step extends StatelessWidget {
-  const _Step({required this.label, required this.time, required this.done, required this.current, required this.last});
+  const _Step({
+    required this.label,
+    required this.time,
+    required this.done,
+    required this.current,
+    required this.last,
+  });
 
   final String label;
   final String time;
@@ -665,14 +1002,35 @@ class _Step extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: done ? primary : Colors.transparent,
-                  border: Border.all(color: done ? primary : Colors.grey.shade400, width: 2),
-                  boxShadow: current ? [BoxShadow(color: primary.withValues(alpha: 0.35), blurRadius: 10, spreadRadius: 3)] : null,
+                  border: Border.all(
+                    color: done ? primary : Colors.grey.shade400,
+                    width: 2,
+                  ),
+                  boxShadow: current
+                      ? [
+                          BoxShadow(
+                            color: primary.withValues(alpha: 0.35),
+                            blurRadius: 10,
+                            spreadRadius: 3,
+                          ),
+                        ]
+                      : null,
                 ),
-                child: done ? const Icon(Icons.check_rounded, size: 14, color: Colors.white) : null,
+                child: done
+                    ? const Icon(
+                        Icons.check_rounded,
+                        size: 14,
+                        color: Colors.white,
+                      )
+                    : null,
               ),
               if (!last)
                 Expanded(
-                  child: Container(width: 2, margin: const EdgeInsets.symmetric(vertical: 2), color: done ? primary : Colors.grey.shade300),
+                  child: Container(
+                    width: 2,
+                    margin: const EdgeInsets.symmetric(vertical: 2),
+                    color: done ? primary : Colors.grey.shade300,
+                  ),
                 ),
             ],
           ),
@@ -680,7 +1038,15 @@ class _Step extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 18),
-              child: Text(label, style: _t(context, 15, current ? FontWeight.w800 : FontWeight.w500, done ? null : _muted(context))),
+              child: Text(
+                label,
+                style: _t(
+                  context,
+                  15,
+                  current ? FontWeight.w800 : FontWeight.w500,
+                  done ? null : _muted(context),
+                ),
+              ),
             ),
           ),
           Text(time, style: _t(context, 12, FontWeight.w500, _muted(context))),
@@ -699,11 +1065,34 @@ class _MapPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width, h = size.height;
-    canvas.drawRect(Offset.zero & size, Paint()..color = dark ? const Color(0xFF1B1D26) : const Color(0xFFE9EEF3));
-    final park = Paint()..color = dark ? const Color(0xFF1F3327) : const Color(0xFFCFE8D5);
-    canvas.drawRRect(RRect.fromLTRBR(w * 0.62, h * 0.08, w * 0.95, h * 0.42, const Radius.circular(18)), park);
-    canvas.drawRRect(RRect.fromLTRBR(w * 0.05, h * 0.62, w * 0.3, h * 0.95, const Radius.circular(18)), park);
-    final water = Paint()..color = dark ? const Color(0xFF1C2A3F) : const Color(0xFFCBE1F7);
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..color = dark ? const Color(0xFF1B1D26) : const Color(0xFFE9EEF3),
+    );
+    final park = Paint()
+      ..color = dark ? const Color(0xFF1F3327) : const Color(0xFFCFE8D5);
+    canvas.drawRRect(
+      RRect.fromLTRBR(
+        w * 0.62,
+        h * 0.08,
+        w * 0.95,
+        h * 0.42,
+        const Radius.circular(18),
+      ),
+      park,
+    );
+    canvas.drawRRect(
+      RRect.fromLTRBR(
+        w * 0.05,
+        h * 0.62,
+        w * 0.3,
+        h * 0.95,
+        const Radius.circular(18),
+      ),
+      park,
+    );
+    final water = Paint()
+      ..color = dark ? const Color(0xFF1C2A3F) : const Color(0xFFCBE1F7);
     canvas.drawPath(
       Path()
         ..moveTo(0, h * 0.25)
@@ -727,14 +1116,21 @@ class _MapPainter extends CustomPainter {
       ..lineTo(w * 0.47, h * 0.58)
       ..lineTo(w * 0.73, h * 0.6)
       ..lineTo(w * 0.76, h * 0.28);
-    canvas.drawPath(route, Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
-      ..color = accent);
+    canvas.drawPath(
+      route,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 6
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round
+        ..color = accent,
+    );
     canvas.drawCircle(Offset(w * 0.2, h * 0.86), 9, Paint()..color = accent);
-    canvas.drawCircle(Offset(w * 0.2, h * 0.86), 4, Paint()..color = Colors.white);
+    canvas.drawCircle(
+      Offset(w * 0.2, h * 0.86),
+      4,
+      Paint()..color = Colors.white,
+    );
     final pin = Offset(w * 0.76, h * 0.28);
     canvas.drawCircle(pin, 22, Paint()..color = accent.withValues(alpha: 0.2));
     canvas.drawCircle(pin, 12, Paint()..color = const Color(0xFFFF4D67));

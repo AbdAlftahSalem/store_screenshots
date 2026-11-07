@@ -6,8 +6,8 @@ Thanks for helping! The short version:
 git clone https://github.com/AbdAlftahSalem/store_shots
 cd store_shots && flutter pub get
 flutter analyze && flutter test          # package unit + render tests
-cd example && flutter pub get && dart run store_shots --template all   # visual check
-cd ../test_app && flutter pub get && dart run store_shots              # end-to-end: Provider, go_router, dark, tablets
+cd example && flutter pub get && dart run store_screenshots --template all   # visual check
+cd ../test_app && flutter pub get && dart run store_screenshots              # end-to-end: Provider, go_router, dark, tablets
 ```
 
 Open `build/store_shots/gallery.html` in each app and look at the images. A change that touches drawing should

@@ -98,7 +98,7 @@ String? flutterRoot() {
   return i > 0 ? exe.substring(0, i) : null;
 }
 
-/// Finds `<store_shots package>/fonts` through `.dart_tool/package_config.json`.
+/// Finds `<store_screenshots package>/fonts` through `.dart_tool/package_config.json`.
 String _packageFontsDir() {
   var dir = Directory.current;
   for (var i = 0; i < 6; i++) {
@@ -106,7 +106,7 @@ String _packageFontsDir() {
     if (cfg.existsSync()) {
       final json = jsonDecode(cfg.readAsStringSync()) as Map<String, Object?>;
       for (final p in (json['packages']! as List<Object?>).cast<Map<String, Object?>>()) {
-        if (p['name'] == 'store_shots') {
+        if (p['name'] == 'store_screenshots') {
           final root = cfg.uri.resolve(p['rootUri']! as String);
           final path = root.toFilePath();
           return '${path.endsWith(Platform.pathSeparator) ? path.substring(0, path.length - 1) : path}/fonts';

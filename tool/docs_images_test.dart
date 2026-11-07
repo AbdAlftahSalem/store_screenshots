@@ -6,12 +6,12 @@ import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:store_shots/src/core/catalog.dart';
-import 'package:store_shots/src/core/config.dart';
-import 'package:store_shots/src/core/devices.dart';
-import 'package:store_shots/src/core/png.dart';
-import 'package:store_shots/src/render/device_frame.dart';
-import 'package:store_shots/src/render/fonts.dart';
+import 'package:store_screenshots/src/core/catalog.dart';
+import 'package:store_screenshots/src/core/config.dart';
+import 'package:store_screenshots/src/core/devices.dart';
+import 'package:store_screenshots/src/core/png.dart';
+import 'package:store_screenshots/src/render/device_frame.dart';
+import 'package:store_screenshots/src/render/fonts.dart';
 
 Future<ui.Image> _wallpaper(double w, double h, List<Color> colors, double scale) async {
   final r = ui.PictureRecorder();
@@ -21,8 +21,12 @@ Future<ui.Image> _wallpaper(double w, double h, List<Color> colors, double scale
   final tp = TextPainter(
     text: TextSpan(
       text: '9:41',
-      style: TextStyle(fontFamily: 'StoreShotsDisplay', fontSize: w * 0.24 * scale, fontWeight: FontWeight.w600,
-          color: const Color(0xEEFFFFFF)),
+      style: TextStyle(
+        fontFamily: 'StoreShotsDisplay',
+        fontSize: w * 0.24 * scale,
+        fontWeight: FontWeight.w600,
+        color: const Color(0xEEFFFFFF),
+      ),
     ),
     textDirection: TextDirection.ltr,
   )..layout();
@@ -46,26 +50,43 @@ void main() {
       final phone = m.shape == FrameShape.island ? kDevices['iphone_6_9']! : kDevices['android_phone']!;
       for (var i = 0; i < m.finishes.length && i < 4; i++) {
         final img = (await tester.runAsync(() => _wallpaper(phone.screenWidth, phone.screenHeight, palettes[i], 1)))!;
-        cards.add(SizedBox(
-          width: 148,
-          child: Column(children: [
-            SizedBox(
-              height: 290,
-              child: DeviceFrame(
-                shot: ScreenShot(image: img, logicalWidth: phone.screenWidth, logicalHeight: phone.screenHeight,
-                    darkTop: true, darkBottom: true),
-                device: phone,
-                frame: FrameChoice(m, m.finishes[i]),
-                statusBar: const StatusBarConfig(),
-                framed: true,
-                shadow: false,
-              ),
+        cards.add(
+          SizedBox(
+            width: 148,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 290,
+                  child: DeviceFrame(
+                    shot: ScreenShot(
+                      image: img,
+                      logicalWidth: phone.screenWidth,
+                      logicalHeight: phone.screenHeight,
+                      darkTop: true,
+                      darkBottom: true,
+                    ),
+                    device: phone,
+                    frame: FrameChoice(m, m.finishes[i]),
+                    statusBar: const StatusBarConfig(),
+                    framed: true,
+                    shadow: false,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${m.id}\n${m.finishes[i].name}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'StoreShotsSans',
+                    fontSize: 12,
+                    color: Color(0xFF333333),
+                    height: 1.3,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text('${m.id}\n${m.finishes[i].name}', textAlign: TextAlign.center,
-                style: const TextStyle(fontFamily: 'StoreShotsSans', fontSize: 12, color: Color(0xFF333333), height: 1.3)),
-          ]),
-        ));
+          ),
+        );
       }
     }
     const size = Size(1560, 1170);
@@ -73,17 +94,19 @@ void main() {
     tester.view.physicalSize = size;
     addTearDown(tester.view.reset);
     final key = GlobalKey();
-    await tester.pumpWidget(Directionality(
-      textDirection: TextDirection.ltr,
-      child: RepaintBoundary(
-        key: key,
-        child: Container(
-          color: const Color(0xFFF4F4F7),
-          padding: const EdgeInsets.all(24),
-          child: Wrap(spacing: 22, runSpacing: 18, children: cards),
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: RepaintBoundary(
+          key: key,
+          child: Container(
+            color: const Color(0xFFF4F4F7),
+            padding: const EdgeInsets.all(24),
+            child: Wrap(spacing: 22, runSpacing: 18, children: cards),
+          ),
         ),
       ),
-    ));
+    );
     final boundary = key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
     final bytes = (await tester.runAsync(() async {
       final image = await boundary.toImage(pixelRatio: 1);

@@ -4,19 +4,23 @@ import 'package:flutter/widgets.dart';
 class S {
   S(this.ar);
 
-  factory S.of(BuildContext context) => S(Localizations.localeOf(context).languageCode == 'ar');
+  factory S.of(BuildContext context) =>
+      S(Localizations.localeOf(context).languageCode == 'ar');
 
   final bool ar;
 
   String get goodMorning => ar ? 'صباح الخير،' : 'Good morning,';
-  String get search => ar ? 'دوّر على منتج، ماركة…' : 'Search products, brands…';
+  String get search =>
+      ar ? 'دوّر على منتج، ماركة…' : 'Search products, brands…';
   String get saleTitle => ar ? 'تخفيضات الصيف' : 'Summer Sale';
-  String get saleBody => ar ? 'خصم لحد 40% على السماعات' : 'Up to 40% off audio';
+  String get saleBody =>
+      ar ? 'خصم لحد 40% على السماعات' : 'Up to 40% off audio';
   String get shopNow => ar ? 'تسوق هلأ' : 'Shop now';
   String get popular => ar ? 'الأكثر طلباً' : 'Popular';
   String get seeAll => ar ? 'عرض الكل' : 'See all';
-  List<String> get categories =>
-      ar ? ['الكل', 'صوتيات', 'ساعات', 'أحذية', 'شنط'] : ['All', 'Audio', 'Wearables', 'Shoes', 'Bags'];
+  List<String> get categories => ar
+      ? ['الكل', 'صوتيات', 'ساعات', 'أحذية', 'شنط']
+      : ['All', 'Audio', 'Wearables', 'Shoes', 'Bags'];
   String get home => ar ? 'الرئيسية' : 'Home';
   String get explore => ar ? 'استكشف' : 'Explore';
   String get cart => ar ? 'السلة' : 'Cart';
@@ -38,9 +42,13 @@ class S {
   String get trackOrder => ar ? 'تتبع الطلب' : 'Track order';
   String get arriving => ar ? 'بيوصل خلال' : 'Arriving in';
   String get yourCourier => ar ? 'المندوب' : 'Your courier';
-  List<String> get steps =>
-      ar ? ['تم الطلب', 'تم التجهيز', 'بالطريق إليك', 'تم التوصيل'] : ['Ordered', 'Packed', 'On the way', 'Delivered'];
-  List<String> get stepTimes => ar ? ['10:02 ص', '10:40 ص', '11:15 ص', '—'] : ['10:02 AM', '10:40 AM', '11:15 AM', '—'];
+  List<String> get steps => ar
+      ? ['تم الطلب', 'تم التجهيز', 'بالطريق إليك', 'تم التوصيل']
+      : ['Ordered', 'Packed', 'On the way', 'Delivered'];
+  List<String> get stepTimes => ar
+      ? ['10:02 ص', '10:40 ص', '11:15 ص', '—']
+      : ['10:02 AM', '10:40 AM', '11:15 AM', '—'];
   String get order => ar ? 'طلب رقم' : 'Order';
-  String price(double v) => ar ? '${v.toStringAsFixed(2)} \$' : '\$${v.toStringAsFixed(2)}';
+  String price(double v) =>
+      ar ? '${v.toStringAsFixed(2)} \$' : '\$${v.toStringAsFixed(2)}';
 }

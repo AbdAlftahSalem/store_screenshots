@@ -2,12 +2,12 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:store_shots/src/core/catalog.dart';
-import 'package:store_shots/src/core/config.dart';
-import 'package:store_shots/src/core/devices.dart';
-import 'package:store_shots/src/render/device_frame.dart';
-import 'package:store_shots/src/render/fonts.dart';
-import 'package:store_shots/src/render/templates.dart';
+import 'package:store_screenshots/src/core/catalog.dart';
+import 'package:store_screenshots/src/core/config.dart';
+import 'package:store_screenshots/src/core/devices.dart';
+import 'package:store_screenshots/src/render/device_frame.dart';
+import 'package:store_screenshots/src/render/fonts.dart';
+import 'package:store_screenshots/src/render/templates.dart';
 
 Future<ui.Image> _solid(int w, int h) async {
   final r = ui.PictureRecorder();
@@ -37,20 +37,22 @@ void main() {
     for (final t in kTemplates) {
       for (final rtl in [false, true]) {
         final model = kFrameModels.values.elementAt(kTemplates.indexOf(t) % 6);
-        await tester.pumpWidget(ShotComposer(
-          size: const Size(660, 1434),
-          scene: ShotScene(
-            style: kTemplateStyles[t]!,
-            device: kDevices['iphone_6_9']!,
-            frame: FrameChoice(model, model.finishes.last),
-            config: cfg,
-            shots: [shot, shot],
-            index: 0,
-            headline: rtl ? 'كل شي *بمكان واحد*' : 'Everything *in one place*',
-            subtitle: 'Subtitle',
-            rtl: rtl,
+        await tester.pumpWidget(
+          ShotComposer(
+            size: const Size(660, 1434),
+            scene: ShotScene(
+              style: kTemplateStyles[t]!,
+              device: kDevices['iphone_6_9']!,
+              frame: FrameChoice(model, model.finishes.last),
+              config: cfg,
+              shots: [shot, shot],
+              index: 0,
+              headline: rtl ? 'كل شي *بمكان واحد*' : 'Everything *in one place*',
+              subtitle: 'Subtitle',
+              rtl: rtl,
+            ),
           ),
-        ));
+        );
         expect(tester.takeException(), isNull, reason: '$t rtl=$rtl');
       }
     }

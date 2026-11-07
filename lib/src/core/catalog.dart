@@ -207,7 +207,7 @@ const List<String> kTemplates = [
 /// Default template.
 const String kDefaultTemplate = 'aurora';
 
-/// One-line descriptions shown by `dart run store_shots templates`.
+/// One-line descriptions shown by `dart run store_screenshots templates`.
 const Map<String, String> kTemplateDescriptions = {
   'aurora': 'Deep indigo with glowing aurora blobs, white headline',
   'clean': 'Soft light gray, dark headline, Apple-keynote calm',

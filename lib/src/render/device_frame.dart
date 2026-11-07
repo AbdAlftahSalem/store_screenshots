@@ -211,11 +211,12 @@ class DeviceFramePainter extends CustomPainter {
       canvas.drawRRect(
         outer,
         Paint()
-          ..shader = ui.Gradient.linear(Offset.zero, Offset(g.outerWidth, g.outerHeight), [
-            _mix(edge, body, 0.2),
-            body,
-            _mix(body, const Color(0xFF000000), 0.25),
-          ], [0, 0.55, 1]),
+          ..shader = ui.Gradient.linear(
+            Offset.zero,
+            Offset(g.outerWidth, g.outerHeight),
+            [_mix(edge, body, 0.2), body, _mix(body, const Color(0xFF000000), 0.25)],
+            [0, 0.55, 1],
+          ),
       );
       if (frame.model.flatEdges) {
         canvas.drawRRect(
@@ -255,8 +256,15 @@ class DeviceFramePainter extends CustomPainter {
     if (statusBar.enabled) _statusBar(canvas, sw);
     _homeIndicator(canvas, sw, shot.logicalHeight);
     if (drawHighlight && shot.highlight != null) {
-      paintHighlight(canvas, shot.highlight!, shot.highlightConfig?.style ?? HighlightStyle.ring, accent,
-          Size(sw, shot.logicalHeight), label: shot.highlightLabel, textDirection: textDirection);
+      paintHighlight(
+        canvas,
+        shot.highlight!,
+        shot.highlightConfig?.style ?? HighlightStyle.ring,
+        accent,
+        Size(sw, shot.logicalHeight),
+        label: shot.highlightLabel,
+        textDirection: textDirection,
+      );
     }
     canvas.restore();
 
@@ -288,14 +296,10 @@ class DeviceFramePainter extends CustomPainter {
       ..shader = ui.Gradient.linear(Offset.zero, Offset(g.outerWidth, 0), [_mix(edge, color, 0.4), color]);
     final w = g.outerWidth;
     final t = w * 0.012;
-    void left(double top, double len) => canvas.drawRRect(
-      RRect.fromLTRBR(-t, top, t, top + len, Radius.circular(t)),
-      paint,
-    );
-    void right(double top, double len) => canvas.drawRRect(
-      RRect.fromLTRBR(w - t, top, w + t, top + len, Radius.circular(t)),
-      paint,
-    );
+    void left(double top, double len) =>
+        canvas.drawRRect(RRect.fromLTRBR(-t, top, t, top + len, Radius.circular(t)), paint);
+    void right(double top, double len) =>
+        canvas.drawRRect(RRect.fromLTRBR(w - t, top, w + t, top + len, Radius.circular(t)), paint);
     switch (frame.model.shape) {
       case FrameShape.island:
         left(w * 0.36, w * 0.07);
@@ -457,29 +461,57 @@ class DeviceFramePainter extends CustomPainter {
   void _battery(Canvas canvas, Offset topLeft, double w, double h, Color c, {required bool horizontal}) {
     final level = statusBar.battery / 100;
     if (horizontal) {
-      final body = RRect.fromLTRBR(topLeft.dx, topLeft.dy, topLeft.dx + w - w * 0.08, topLeft.dy + h,
-          Radius.circular(h * 0.3));
-      canvas.drawRRect(body, Paint()
-        ..color = c.withValues(alpha: 0.4)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = h * 0.09);
+      final body = RRect.fromLTRBR(
+        topLeft.dx,
+        topLeft.dy,
+        topLeft.dx + w - w * 0.08,
+        topLeft.dy + h,
+        Radius.circular(h * 0.3),
+      );
+      canvas.drawRRect(
+        body,
+        Paint()
+          ..color = c.withValues(alpha: 0.4)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = h * 0.09,
+      );
       final inner = body.deflate(h * 0.16);
       canvas.drawRRect(
-        RRect.fromLTRBR(inner.left, inner.top, inner.left + inner.width * level, inner.bottom,
-            Radius.circular(h * 0.18)),
+        RRect.fromLTRBR(
+          inner.left,
+          inner.top,
+          inner.left + inner.width * level,
+          inner.bottom,
+          Radius.circular(h * 0.18),
+        ),
         Paint()..color = c,
       );
       canvas.drawRRect(
-        RRect.fromLTRBR(body.right + w * 0.02, topLeft.dy + h * 0.32, body.right + w * 0.08,
-            topLeft.dy + h * 0.68, Radius.circular(w * 0.03)),
+        RRect.fromLTRBR(
+          body.right + w * 0.02,
+          topLeft.dy + h * 0.32,
+          body.right + w * 0.08,
+          topLeft.dy + h * 0.68,
+          Radius.circular(w * 0.03),
+        ),
         Paint()..color = c.withValues(alpha: 0.45),
       );
     } else {
-      final body = RRect.fromLTRBR(topLeft.dx, topLeft.dy + h * 0.1, topLeft.dx + w, topLeft.dy + h,
-          Radius.circular(w * 0.18));
+      final body = RRect.fromLTRBR(
+        topLeft.dx,
+        topLeft.dy + h * 0.1,
+        topLeft.dx + w,
+        topLeft.dy + h,
+        Radius.circular(w * 0.18),
+      );
       canvas.drawRRect(
-        RRect.fromLTRBR(topLeft.dx + w * 0.3, topLeft.dy, topLeft.dx + w * 0.7, topLeft.dy + h * 0.12,
-            Radius.circular(w * 0.1)),
+        RRect.fromLTRBR(
+          topLeft.dx + w * 0.3,
+          topLeft.dy,
+          topLeft.dx + w * 0.7,
+          topLeft.dy + h * 0.12,
+          Radius.circular(w * 0.1),
+        ),
         Paint()..color = c,
       );
       canvas.drawRRect(body, Paint()..color = c.withValues(alpha: level >= 1 ? 1 : 0.35));
@@ -519,54 +551,89 @@ void paintHighlight(
         ..addRect(Offset.zero & screen)
         ..addRRect(rr);
       canvas.drawPath(path, Paint()..color = const Color(0x99000000));
-      canvas.drawRRect(rr, Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = screen.width * 0.007
-        ..color = const Color(0xFFFFFFFF));
+      canvas.drawRRect(
+        rr,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = screen.width * 0.007
+          ..color = const Color(0xFFFFFFFF),
+      );
     case HighlightStyle.ring:
     case HighlightStyle.arrow:
-      canvas.drawRRect(rr, Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = screen.width * 0.03
-        ..color = accent.withValues(alpha: 0.28)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, screen.width * 0.012));
-      canvas.drawRRect(rr, Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = screen.width * 0.009
-        ..color = accent);
+      canvas.drawRRect(
+        rr,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = screen.width * 0.03
+          ..color = accent.withValues(alpha: 0.28)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, screen.width * 0.012),
+      );
+      canvas.drawRRect(
+        rr,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = screen.width * 0.009
+          ..color = accent,
+      );
       if (style == HighlightStyle.arrow) {
         // Curved arrow coming from above (or below when there is no room).
         final fromAbove = r.top > screen.height * 0.25;
         final rtl = textDirection == TextDirection.rtl;
-        final tip = Offset(r.center.dx + (rtl ? r.width * 0.2 : -r.width * 0.2), fromAbove ? r.top - pad * 0.6 : r.bottom + pad * 0.6);
-        final start = tip + Offset(rtl ? -screen.width * 0.18 : screen.width * 0.18, fromAbove ? -screen.width * 0.26 : screen.width * 0.26);
+        final tip = Offset(
+          r.center.dx + (rtl ? r.width * 0.2 : -r.width * 0.2),
+          fromAbove ? r.top - pad * 0.6 : r.bottom + pad * 0.6,
+        );
+        final start =
+            tip +
+            Offset(
+              rtl ? -screen.width * 0.18 : screen.width * 0.18,
+              fromAbove ? -screen.width * 0.26 : screen.width * 0.26,
+            );
         final ctrl = Offset(start.dx, tip.dy);
         final paint = Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = screen.width * 0.011
           ..strokeCap = StrokeCap.round
           ..color = accent;
-        canvas.drawPath(Path()
-          ..moveTo(start.dx, start.dy)
-          ..quadraticBezierTo(ctrl.dx, ctrl.dy, tip.dx, tip.dy), paint);
+        canvas.drawPath(
+          Path()
+            ..moveTo(start.dx, start.dy)
+            ..quadraticBezierTo(ctrl.dx, ctrl.dy, tip.dx, tip.dy),
+          paint,
+        );
         final dir = (tip - ctrl);
         final ang = math.atan2(dir.dy, dir.dx);
         final hl = screen.width * 0.045;
-        canvas.drawPath(Path()
-          ..moveTo(tip.dx + hl * math.cos(ang + 2.6), tip.dy + hl * math.sin(ang + 2.6))
-          ..lineTo(tip.dx, tip.dy)
-          ..lineTo(tip.dx + hl * math.cos(ang - 2.6), tip.dy + hl * math.sin(ang - 2.6)), paint);
+        canvas.drawPath(
+          Path()
+            ..moveTo(tip.dx + hl * math.cos(ang + 2.6), tip.dy + hl * math.sin(ang + 2.6))
+            ..lineTo(tip.dx, tip.dy)
+            ..lineTo(tip.dx + hl * math.cos(ang - 2.6), tip.dy + hl * math.sin(ang - 2.6)),
+          paint,
+        );
         if (label != null && label.isNotEmpty) {
-          _pill(canvas, label, start + Offset(0, fromAbove ? -screen.width * 0.05 : screen.width * 0.05), accent,
-              screen.width, textDirection);
+          _pill(
+            canvas,
+            label,
+            start + Offset(0, fromAbove ? -screen.width * 0.05 : screen.width * 0.05),
+            accent,
+            screen.width,
+            textDirection,
+          );
         }
         return;
       }
   }
   if (label != null && label.isNotEmpty) {
     final above = r.top > screen.height * 0.2;
-    _pill(canvas, label, Offset(r.center.dx, above ? r.top - screen.width * 0.07 : r.bottom + screen.width * 0.07),
-        accent, screen.width, textDirection);
+    _pill(
+      canvas,
+      label,
+      Offset(r.center.dx, above ? r.top - screen.width * 0.07 : r.bottom + screen.width * 0.07),
+      accent,
+      screen.width,
+      textDirection,
+    );
   }
 }
 
@@ -590,9 +657,12 @@ void _pill(Canvas canvas, String text, Offset center, Color accent, double sw, T
   var left = center.dx - w / 2;
   left = left.clamp(sw * 0.03, sw * 0.97 - w).toDouble();
   final r = RRect.fromLTRBR(left, center.dy - h / 2, left + w, center.dy + h / 2, Radius.circular(h / 2));
-  canvas.drawRRect(r.shift(Offset(0, sw * 0.008)), Paint()
-    ..color = const Color(0x44000000)
-    ..maskFilter = MaskFilter.blur(BlurStyle.normal, sw * 0.012));
+  canvas.drawRRect(
+    r.shift(Offset(0, sw * 0.008)),
+    Paint()
+      ..color = const Color(0x44000000)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, sw * 0.012),
+  );
   canvas.drawRRect(r, Paint()..color = accent);
   tp.paint(canvas, Offset(left + (w - tp.width) / 2, center.dy - tp.height / 2));
 }

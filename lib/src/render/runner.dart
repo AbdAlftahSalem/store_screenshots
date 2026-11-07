@@ -23,12 +23,7 @@ import 'templates.dart';
 /// when you need more than the locale (e.g. the screen id).
 class ShotContext {
   /// Creates a context.
-  const ShotContext({
-    required this.locale,
-    required this.device,
-    required this.screen,
-    required this.theme,
-  });
+  const ShotContext({required this.locale, required this.device, required this.screen, required this.theme});
 
   /// Locale code from the config, e.g. `ar`.
   final String locale;
@@ -96,14 +91,19 @@ void storeShots<T>({
 }) {
   final StoreShotsConfig cfg;
   try {
-    // `dart run store_shots --config other.yaml` passes its file through the environment.
+    // `dart run store_screenshots --config other.yaml` passes its file through the environment.
     cfg = StoreShotsConfig.load(Platform.environment['STORE_SHOTS_CONFIG'] ?? config);
   } on ConfigException catch (e) {
     test('store_shots config', () => fail(e.toString()));
     return;
   }
-  final run = _Run(cfg, _envFilter('STORE_SHOTS_LOCALES'), _envFilter('STORE_SHOTS_DEVICES'),
-      _envFilter('STORE_SHOTS_TEMPLATES'), _envFilter('STORE_SHOTS_SCREENS'));
+  final run = _Run(
+    cfg,
+    _envFilter('STORE_SHOTS_LOCALES'),
+    _envFilter('STORE_SHOTS_DEVICES'),
+    _envFilter('STORE_SHOTS_TEMPLATES'),
+    _envFilter('STORE_SHOTS_SCREENS'),
+  );
 
   setUpAll(() async {
     await loadStoreShotsFonts();
@@ -136,7 +136,10 @@ class _Run {
       devices = cfg.devices.where((d) => devices == null || devices.contains(d.id)).toList(),
       templates = templates == null
           ? cfg.templates
-          : [for (final t in templates) if (kTemplates.contains(t) || t == 'none') t],
+          : [
+              for (final t in templates)
+                if (kTemplates.contains(t) || t == 'none') t,
+            ],
       screenFilter = screens;
 
   final StoreShotsConfig cfg;
@@ -169,30 +172,36 @@ class _Run {
   void finish() {
     stopwatch.stop();
     if (records.isEmpty) return;
-    File('$out/manifest.json').writeAsStringSync(const JsonEncoder.withIndent('  ').convert({
-      'app_name': cfg.appName,
-      'took_ms': stopwatch.elapsedMilliseconds,
-      'screens': cfg.screens.length,
-      'locales': locales,
-      'devices': [for (final d in devices) d.id],
-      'templates': templates,
-      'warnings': warnings,
-      'images': [for (final r in records) r.toJson()],
-    }));
-    File('$out/gallery.html').writeAsStringSync(
-      buildGallery(appName: cfg.appName, shots: records, took: stopwatch.elapsed),
+    File('$out/manifest.json').writeAsStringSync(
+      const JsonEncoder.withIndent('  ').convert({
+        'app_name': cfg.appName,
+        'took_ms': stopwatch.elapsedMilliseconds,
+        'screens': cfg.screens.length,
+        'locales': locales,
+        'devices': [for (final d in devices) d.id],
+        'templates': templates,
+        'warnings': warnings,
+        'images': [for (final r in records) r.toJson()],
+      }),
     );
+    File(
+      '$out/gallery.html',
+    ).writeAsStringSync(buildGallery(appName: cfg.appName, shots: records, took: stopwatch.elapsed));
     final store = records.where((r) => r.kind == 'screenshot' && !r.path.startsWith('variants/')).length;
     final fg = records.where((r) => r.kind == 'feature_graphic').length;
     final variants = records.where((r) => r.path.startsWith('variants/')).length;
-    final screens = screenFilter == null ? cfg.screens.length : cfg.screens.where((s) => screenFilter!.contains(s.id)).length;
+    final screens = screenFilter == null
+        ? cfg.screens.length
+        : cfg.screens.where((s) => screenFilter!.contains(s.id)).length;
     // ignore: avoid_print
     String n(int n, String w) => '$n $w${n == 1 ? '' : 's'}';
     // ignore: avoid_print
-    print('\n✔ store_shots: ${n(screens, 'screen')} × ${n(locales.length, 'locale')} × ${n(devices.length, 'device')} = '
-        '$store screenshots${fg > 0 ? ' + $fg feature graphic${fg == 1 ? '' : 's'}' : ''}'
-        '${variants > 0 ? ' + $variants variant images' : ''} '
-        '(${(stopwatch.elapsedMilliseconds / 1000).toStringAsFixed(1)}s)\n  → $out/gallery.html');
+    print(
+      '\n✔ store_shots: ${n(screens, 'screen')} × ${n(locales.length, 'locale')} × ${n(devices.length, 'device')} = '
+      '$store screenshots${fg > 0 ? ' + $fg feature graphic${fg == 1 ? '' : 's'}' : ''}'
+      '${variants > 0 ? ' + $variants variant images' : ''} '
+      '(${(stopwatch.elapsedMilliseconds / 1000).toStringAsFixed(1)}s)\n  → $out/gallery.html',
+    );
     final counts = <String, int>{};
     for (final w in warnings) {
       counts[w] = (counts[w] ?? 0) + 1;
@@ -249,10 +258,12 @@ Future<List<ScreenShot>> _capture<T>(
       dispatcher.defaultRouteNameTestValue = screen.route;
       final key = GlobalKey();
       await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pumpWidget(RepaintBoundary(
-        key: key,
-        child: KeyedSubtree(key: UniqueKey(), child: app(overrides?.call(locale) ?? <T>[])),
-      ));
+      await tester.pumpWidget(
+        RepaintBoundary(
+          key: key,
+          child: KeyedSubtree(key: UniqueKey(), child: app(overrides?.call(locale) ?? <T>[])),
+        ),
+      );
       await _settle(tester, cfg.waitMs);
       if (beforeShot != null) {
         await beforeShot(tester, ctx);
@@ -268,8 +279,10 @@ Future<List<ScreenShot>> _capture<T>(
       if (h != null) {
         final finder = find.byKey(ValueKey<String>(h.key)).hitTestable();
         if (finder.evaluate().isEmpty) {
-          run.warnings.add('${screen.id}: no visible widget with key ValueKey("${h.key}") to highlight '
-              '(is it off screen on ${device.id}?).');
+          run.warnings.add(
+            '${screen.id}: no visible widget with key ValueKey("${h.key}") to highlight '
+            '(is it off screen on ${device.id}?).',
+          );
         } else {
           highlight = tester.getRect(finder.first);
         }
@@ -282,16 +295,18 @@ Future<List<ScreenShot>> _capture<T>(
         return (image, bytes!);
       });
       final (image, bytes) = captured!;
-      shots.add(ScreenShot(
-        image: image,
-        logicalWidth: size.width,
-        logicalHeight: size.height,
-        darkTop: _isDark(bytes, image.width, image.height, 0, device.statusBarHeight * dpr),
-        darkBottom: _isDark(bytes, image.width, image.height, image.height - 30 * dpr, image.height.toDouble()),
-        highlight: highlight,
-        highlightConfig: h,
-        highlightLabel: h?.label == null ? null : captions[h!.label!],
-      ));
+      shots.add(
+        ScreenShot(
+          image: image,
+          logicalWidth: size.width,
+          logicalHeight: size.height,
+          darkTop: _isDark(bytes, image.width, image.height, 0, device.statusBarHeight * dpr),
+          darkBottom: _isDark(bytes, image.width, image.height, image.height - 30 * dpr, image.height.toDouble()),
+          highlight: highlight,
+          highlightConfig: h,
+          highlightLabel: h?.label == null ? null : captions[h!.label!],
+        ),
+      );
     }
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pump(const Duration(seconds: 1));
@@ -325,7 +340,11 @@ Future<void> _settle(WidgetTester tester, int waitMs) async {
     await tester.pump(Duration(milliseconds: waitMs ~/ 4 + 1));
   }
   try {
-    await tester.pumpAndSettle(const Duration(milliseconds: 100), EnginePhase.sendSemanticsUpdate, const Duration(seconds: 3));
+    await tester.pumpAndSettle(
+      const Duration(milliseconds: 100),
+      EnginePhase.sendSemanticsUpdate,
+      const Duration(seconds: 3),
+    );
   } on FlutterError {
     // An endless animation (e.g. a spinner). The frame we have is fine.
   }
@@ -376,7 +395,13 @@ Future<void> _compose(
   for (final template in run.templates) {
     final primary = template == run.templates.first && primaryTheme;
     String pathFor(int i, ScreenConfig s) {
-      final base = shotPath(device: device, locale: locale, index: i, screenId: s.id, localeOverrides: cfg.storeLocales);
+      final base = shotPath(
+        device: device,
+        locale: locale,
+        index: i,
+        screenId: s.id,
+        localeOverrides: cfg.storeLocales,
+      );
       return primary ? base : '${variantPrefix(template, theme)}$base';
     }
 
@@ -411,21 +436,29 @@ Future<void> _compose(
     if (template == 'none') {
       for (var i = 0; i < cfg.screens.length; i++) {
         if (!wanted(cfg.screens[i])) continue;
-        final png = await _render(tester, Size(W, H), SizedBox(
-          width: W,
-          height: H,
-          child: DeviceFrame(
-            shot: shots[i],
-            device: device,
-            frame: cfg.frameFor(device),
-            statusBar: cfg.statusBar,
-            framed: false,
-            rounded: false,
-            shadow: false,
-            textDirection: rtl ? TextDirection.rtl : TextDirection.ltr,
+        final png = await _render(
+          tester,
+          Size(W, H),
+          SizedBox(
+            width: W,
+            height: H,
+            child: DeviceFrame(
+              shot: shots[i],
+              device: device,
+              frame: cfg.frameFor(device),
+              statusBar: cfg.statusBar,
+              framed: false,
+              rounded: false,
+              shadow: false,
+              textDirection: rtl ? TextDirection.rtl : TextDirection.ltr,
+            ),
           ),
-        ));
-        run.write(pathFor(i, cfg.screens[i]), png, _rec(pathFor(i, cfg.screens[i]), locale, device, cfg.screens[i].id, template, theme));
+        );
+        run.write(
+          pathFor(i, cfg.screens[i]),
+          png,
+          _rec(pathFor(i, cfg.screens[i]), locale, device, cfg.screens[i].id, template, theme),
+        );
       }
       continue;
     }
@@ -439,7 +472,11 @@ Future<void> _compose(
         if (!wanted(cfg.screens[i])) continue;
         final slot = rtl ? n - 1 - i : i;
         final png = await _slice(tester, wide, Rect.fromLTWH(slot * W, 0, W, H));
-        run.write(pathFor(i, cfg.screens[i]), png, _rec(pathFor(i, cfg.screens[i]), locale, device, cfg.screens[i].id, template, theme));
+        run.write(
+          pathFor(i, cfg.screens[i]),
+          png,
+          _rec(pathFor(i, cfg.screens[i]), locale, device, cfg.screens[i].id, template, theme),
+        );
       }
     } else {
       for (var i = 0; i < cfg.screens.length; i++) {
@@ -453,27 +490,38 @@ Future<void> _compose(
 
     // Feature Graphic: once per locale, from the first Android device (or
     // the first device when the run has no Android device).
-    final fgDevice = run.devices.firstWhere((d) => d.store == Store.android && !d.tablet, orElse: () => run.devices.first);
+    final fgDevice = run.devices.firstWhere(
+      (d) => d.store == Store.android && !d.tablet,
+      orElse: () => run.devices.first,
+    );
     if (cfg.featureGraphic && primary && device.id == fgDevice.id && template != 'none') {
       final size = Size(kFeatureGraphicSize.width.toDouble(), kFeatureGraphicSize.height.toDouble());
-      final png = await _render(tester, size, FeatureGraphicComposer(
-        scene: sceneFor(0, style),
-        appName: captions['app_name'] ?? cfg.appName,
-        tagline: captions[cfg.tagline] ?? '',
-        size: size,
-      ));
+      final png = await _render(
+        tester,
+        size,
+        FeatureGraphicComposer(
+          scene: sceneFor(0, style),
+          appName: captions['app_name'] ?? cfg.appName,
+          tagline: captions[cfg.tagline] ?? '',
+          size: size,
+        ),
+      );
       final p = featureGraphicPath(locale, cfg.storeLocales);
-      run.write(p, png, ShotRecord(
-        path: p,
-        locale: locale,
-        device: 'feature_graphic',
-        screen: 'feature_graphic',
-        template: template,
-        theme: theme,
-        width: kFeatureGraphicSize.width,
-        height: kFeatureGraphicSize.height,
-        kind: 'feature_graphic',
-      ));
+      run.write(
+        p,
+        png,
+        ShotRecord(
+          path: p,
+          locale: locale,
+          device: 'feature_graphic',
+          screen: 'feature_graphic',
+          template: template,
+          theme: theme,
+          width: kFeatureGraphicSize.width,
+          height: kFeatureGraphicSize.height,
+          kind: 'feature_graphic',
+        ),
+      );
     }
   }
   await tester.pumpWidget(const SizedBox.shrink());
@@ -493,12 +541,17 @@ ShotRecord _rec(String path, String locale, DeviceSpec d, String screen, String 
 Future<ui.Image> _renderImage(WidgetTester tester, Size size, Widget child) async {
   tester.view.physicalSize = size;
   final key = GlobalKey();
-  await tester.pumpWidget(Directionality(
-    textDirection: TextDirection.ltr,
-    child: Center(
-      child: RepaintBoundary(key: key, child: SizedBox(width: size.width, height: size.height, child: child)),
+  await tester.pumpWidget(
+    Directionality(
+      textDirection: TextDirection.ltr,
+      child: Center(
+        child: RepaintBoundary(
+          key: key,
+          child: SizedBox(width: size.width, height: size.height, child: child),
+        ),
+      ),
     ),
-  ));
+  );
   final boundary = key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
   return (await tester.runAsync(() => boundary.toImage(pixelRatio: 1)))!;
 }

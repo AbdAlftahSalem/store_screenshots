@@ -13,14 +13,19 @@ class ShopApp extends StatelessWidget {
   const ShopApp({super.key});
 
   ThemeData _theme(Brightness brightness, Locale? locale) {
-    final scheme = ColorScheme.fromSeed(seedColor: _seed, brightness: brightness);
+    final scheme = ColorScheme.fromSeed(
+      seedColor: _seed,
+      brightness: brightness,
+    );
     final dark = brightness == Brightness.dark;
     return ThemeData(
       colorScheme: scheme.copyWith(
         primary: dark ? const Color(0xFF8F84FF) : _seed,
         surface: dark ? const Color(0xFF111118) : Colors.white,
       ),
-      scaffoldBackgroundColor: dark ? const Color(0xFF0B0B10) : const Color(0xFFF7F7FB),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF0B0B10)
+          : const Color(0xFFF7F7FB),
       // Arabic gets a real Arabic font; Latin keeps the platform font.
       fontFamily: locale?.languageCode == 'ar' ? 'IBMPlexSansArabic' : null,
       useMaterial3: true,
@@ -48,7 +53,9 @@ class ShopApp extends StatelessWidget {
         ['orders'] => const TrackOrderScreen(),
         _ => null,
       };
-      return page == null ? null : MaterialPageRoute<void>(settings: settings, builder: (_) => page);
+      return page == null
+          ? null
+          : MaterialPageRoute<void>(settings: settings, builder: (_) => page);
     },
   );
 }

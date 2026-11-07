@@ -2,7 +2,7 @@
 
 ## 0.1.0
 
-First release.
+First release on pub.dev as `store_screenshots` (the GitHub repo stays `store_shots`).
 
 - `storeShots()` test API: renders every screen × locale × device × theme inside `flutter test`, no emulator.
 - `store_shots.yaml` with defaults for everything but `screens`, validated with "did you mean…?" errors.
@@ -16,4 +16,4 @@ First release.
 - Google Play Feature Graphic (1024×500) per locale.
 - Light and dark runs; template and color overrides.
 - Opaque 24-bit PNGs in fastlane `deliver` / `supply` folders, `gallery.html` and `manifest.json`.
-- CLI: `dart run store_shots` (run, `init`, `templates`, `devices`, `frames`, filters, `--open`).
+- CLI: `dart run store_screenshots` (run, `init`, `templates`, `devices`, `frames`, filters, `--open`).
