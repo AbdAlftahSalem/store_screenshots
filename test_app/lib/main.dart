@@ -40,7 +40,9 @@ class _WalletAppState extends State<WalletApp> {
         seedColor: const Color(0xFF0F9D7A),
         brightness: b,
       ).copyWith(surface: dark ? const Color(0xFF12161C) : Colors.white),
-      scaffoldBackgroundColor: dark ? const Color(0xFF0A0D12) : const Color(0xFFF4F6F8),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF0A0D12)
+          : const Color(0xFFF4F6F8),
       fontFamily: 'Tajawal',
     );
   }

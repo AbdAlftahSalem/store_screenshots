@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  store_shots:
+  store_screenshots:
     path: ../
 
 flutter:

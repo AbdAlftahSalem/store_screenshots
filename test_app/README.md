@@ -12,7 +12,7 @@ The end-to-end test bed for store_shots. Where `example/` shows the happy path, 
 
 ```bash
 flutter pub get
-dart run store_shots      # 4 screens × 2 locales × 5 devices × 2 themes = 80 images + 2 Feature Graphics
+dart run store_screenshots      # 4 screens × 2 locales × 5 devices × 2 themes = 80 images + 2 Feature Graphics
 ```
 
 Tajawal is licensed under the SIL OFL 1.1 (`assets/fonts/OFL.txt`).

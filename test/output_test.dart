@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:store_shots/src/core/captions.dart';
-import 'package:store_shots/src/core/devices.dart';
-import 'package:store_shots/src/core/gallery.dart';
-import 'package:store_shots/src/core/output.dart';
-import 'package:store_shots/src/core/png.dart';
+import 'package:store_screenshots/src/core/captions.dart';
+import 'package:store_screenshots/src/core/devices.dart';
+import 'package:store_screenshots/src/core/gallery.dart';
+import 'package:store_screenshots/src/core/output.dart';
+import 'package:store_screenshots/src/core/png.dart';
 
 void main() {
   group('fastlane paths', () {
@@ -32,7 +32,12 @@ void main() {
       expect(storeLocale('zh', Store.ios), 'zh-Hans');
       expect(storeLocale('he', Store.android), 'iw-IL');
       expect(storeLocale('xx', Store.android), 'xx');
-      expect(storeLocale('ar', Store.ios, {'ar': {'ios': 'ar'}}), 'ar');
+      expect(
+        storeLocale('ar', Store.ios, {
+          'ar': {'ios': 'ar'},
+        }),
+        'ar',
+      );
     });
     test('RTL detection', () {
       expect(isRtl('ar'), isTrue);
@@ -103,11 +108,27 @@ void main() {
       appName: 'Shop <&>',
       took: const Duration(seconds: 3),
       shots: const [
-        ShotRecord(path: 'ios/en-US/a.png', locale: 'en', device: 'iphone_6_9', screen: 'home', template: 'aurora',
-            theme: 'light', width: 1320, height: 2868),
-        ShotRecord(path: 'android/en-US/images/featureGraphic.png', locale: 'en', device: 'feature_graphic',
-            screen: 'feature_graphic', template: 'aurora', theme: 'light', width: 1024, height: 500,
-            kind: 'feature_graphic'),
+        ShotRecord(
+          path: 'ios/en-US/a.png',
+          locale: 'en',
+          device: 'iphone_6_9',
+          screen: 'home',
+          template: 'aurora',
+          theme: 'light',
+          width: 1320,
+          height: 2868,
+        ),
+        ShotRecord(
+          path: 'android/en-US/images/featureGraphic.png',
+          locale: 'en',
+          device: 'feature_graphic',
+          screen: 'feature_graphic',
+          template: 'aurora',
+          theme: 'light',
+          width: 1024,
+          height: 500,
+          kind: 'feature_graphic',
+        ),
       ],
     );
     expect(html, contains('Shop &lt;&amp;&gt;'));

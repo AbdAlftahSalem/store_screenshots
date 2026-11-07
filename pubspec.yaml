@@ -1,12 +1,20 @@
-name: store_shots
+name: store_screenshots
 description: >-
-  App Store and Google Play screenshots from your Flutter app inside flutter test:
-  device frames, translated captions, RTL, 10 templates, highlights and the Play Feature Graphic.
+  Generate App Store and Google Play screenshots from your Flutter app in flutter test: device frames, translated captions, RTL, 10 templates and the Play Feature Graphic.
 version: 0.1.0
+homepage: https://github.com/AbdAlftahSalem/store_shots
 repository: https://github.com/AbdAlftahSalem/store_shots
 issue_tracker: https://github.com/AbdAlftahSalem/store_shots/issues
 topics: [screenshots, app-store, google-play, testing, localization]
-publish_to: none
+screenshots:
+  - description: The 10 templates in English.
+    path: doc/images/templates_en.jpg
+  - description: The same templates in Arabic, right to left.
+    path: doc/images/templates_ar.jpg
+  - description: Light and dark on iPhone, iPad, Android phone and tablet.
+    path: doc/images/devices_themes.jpg
+  - description: Google Play Feature Graphic in English and Arabic.
+    path: doc/images/feature_graphic.jpg
 
 environment:
   sdk: ^3.8.0
@@ -24,6 +32,6 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 executables:
-  store_shots:
+  store_screenshots:
 
 flutter:

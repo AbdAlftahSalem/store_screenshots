@@ -8,15 +8,28 @@ import 'model.dart';
 bool _ar(BuildContext c) => Localizations.localeOf(c).languageCode == 'ar';
 String _tr(BuildContext c, String en, String ar) => _ar(c) ? ar : en;
 String money(BuildContext c, double v, {bool sign = false}) {
-  final s = v.abs().toStringAsFixed(2).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+  final s = v
+      .abs()
+      .toStringAsFixed(2)
+      .replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
   final pre = sign ? (v < 0 ? '-' : '+') : '';
   return _ar(c) ? '\u200E$pre$s \$\u200E' : '$pre\$$s';
 }
 
 Color _surface(BuildContext c) => Theme.of(c).colorScheme.surface;
-Color _muted(BuildContext c) => Theme.of(c).colorScheme.onSurface.withValues(alpha: 0.55);
-TextStyle _t(BuildContext c, double s, [FontWeight w = FontWeight.w500, Color? color]) =>
-    TextStyle(fontSize: s, fontWeight: w, color: color ?? Theme.of(c).colorScheme.onSurface, height: 1.2);
+Color _muted(BuildContext c) =>
+    Theme.of(c).colorScheme.onSurface.withValues(alpha: 0.55);
+TextStyle _t(
+  BuildContext c,
+  double s, [
+  FontWeight w = FontWeight.w500,
+  Color? color,
+]) => TextStyle(
+  fontSize: s,
+  fontWeight: w,
+  color: color ?? Theme.of(c).colorScheme.onSurface,
+  height: 1.2,
+);
 
 const _green = Color(0xFF0F9D7A);
 
@@ -34,16 +47,33 @@ class _Shell extends StatelessWidget {
         : AppBar(
             title: Text(title!, style: _t(context, 20, FontWeight.w800)),
             backgroundColor: Colors.transparent,
-            actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz_rounded))],
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.more_horiz_rounded),
+              ),
+            ],
           ),
     body: SafeArea(bottom: false, top: title == null, child: child),
     bottomNavigationBar: NavigationBar(
       selectedIndex: index,
       destinations: [
-        NavigationDestination(icon: const Icon(Icons.space_dashboard_rounded), label: _tr(context, 'Home', 'الرئيسية')),
-        NavigationDestination(icon: const Icon(Icons.receipt_long_rounded), label: _tr(context, 'Activity', 'العمليات')),
-        NavigationDestination(icon: const Icon(Icons.credit_card_rounded), label: _tr(context, 'Cards', 'البطاقات')),
-        NavigationDestination(icon: const Icon(Icons.pie_chart_rounded), label: _tr(context, 'Insights', 'التحليلات')),
+        NavigationDestination(
+          icon: const Icon(Icons.space_dashboard_rounded),
+          label: _tr(context, 'Home', 'الرئيسية'),
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.receipt_long_rounded),
+          label: _tr(context, 'Activity', 'العمليات'),
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.credit_card_rounded),
+          label: _tr(context, 'Cards', 'البطاقات'),
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.pie_chart_rounded),
+          label: _tr(context, 'Insights', 'التحليلات'),
+        ),
       ],
     ),
   );
@@ -65,20 +95,28 @@ class DashboardScreen extends StatelessWidget {
             CircleAvatar(
               radius: 22,
               backgroundColor: _green.withValues(alpha: 0.15),
-              child: Text(api.userName.isEmpty ? '?' : api.userName.characters.first,
-                  style: _t(context, 18, FontWeight.w800, _green)),
+              child: Text(
+                api.userName.isEmpty ? '?' : api.userName.characters.first,
+                style: _t(context, 18, FontWeight.w800, _green),
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_tr(context, 'Welcome back', 'أهلاً من جديد'), style: _t(context, 13, FontWeight.w400, _muted(context))),
+                  Text(
+                    _tr(context, 'Welcome back', 'أهلاً من جديد'),
+                    style: _t(context, 13, FontWeight.w400, _muted(context)),
+                  ),
                   Text(api.userName, style: _t(context, 19, FontWeight.w800)),
                 ],
               ),
             ),
-            IconButton.filledTonal(onPressed: () {}, icon: const Icon(Icons.notifications_none_rounded)),
+            IconButton.filledTonal(
+              onPressed: () {},
+              icon: const Icon(Icons.notifications_none_rounded),
+            ),
           ],
         ),
         const SizedBox(height: 18),
@@ -87,8 +125,15 @@ class DashboardScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _Action(Icons.arrow_upward_rounded, _tr(context, 'Send', 'إرسال'), key: const ValueKey('send')),
-            _Action(Icons.arrow_downward_rounded, _tr(context, 'Request', 'طلب')),
+            _Action(
+              Icons.arrow_upward_rounded,
+              _tr(context, 'Send', 'إرسال'),
+              key: const ValueKey('send'),
+            ),
+            _Action(
+              Icons.arrow_downward_rounded,
+              _tr(context, 'Request', 'طلب'),
+            ),
             _Action(Icons.add_rounded, _tr(context, 'Top up', 'شحن')),
             _Action(Icons.qr_code_scanner_rounded, _tr(context, 'Scan', 'مسح')),
           ],
@@ -103,7 +148,9 @@ class DashboardScreen extends StatelessWidget {
     final recent = _Panel(
       title: _tr(context, 'Recent activity', 'آخر العمليات'),
       trailing: _tr(context, 'See all', 'الكل'),
-      child: Column(children: [for (final t in api.transactions.take(4)) _TxnTile(t)]),
+      child: Column(
+        children: [for (final t in api.transactions.take(4)) _TxnTile(t)],
+      ),
     );
     return _Shell(
       index: 0,
@@ -122,7 +169,13 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
               ]
-            : [header, const SizedBox(height: 18), chart, const SizedBox(height: 14), recent],
+            : [
+                header,
+                const SizedBox(height: 18),
+                chart,
+                const SizedBox(height: 14),
+                recent,
+              ],
       ),
     );
   }
@@ -150,18 +203,34 @@ class _BalanceCard extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(_tr(context, 'Total balance', 'الرصيد الكلي'), style: _t(context, 14, FontWeight.w500, Colors.white70)),
+            Text(
+              _tr(context, 'Total balance', 'الرصيد الكلي'),
+              style: _t(context, 14, FontWeight.w500, Colors.white70),
+            ),
             const Spacer(),
-            const Icon(Icons.visibility_outlined, color: Colors.white70, size: 20),
+            const Icon(
+              Icons.visibility_outlined,
+              color: Colors.white70,
+              size: 20,
+            ),
           ],
         ),
         const SizedBox(height: 8),
-        Text(hidden ? '••••••' : money(context, balance), style: _t(context, 36, FontWeight.w800, Colors.white)),
+        Text(
+          hidden ? '••••••' : money(context, balance),
+          style: _t(context, 36, FontWeight.w800, Colors.white),
+        ),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(20)),
-          child: Text(_tr(context, '+12.4% this month', '+12.4% هالشهر'), style: _t(context, 12, FontWeight.w700, Colors.white)),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.18),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            _tr(context, '+12.4% this month', '+12.4% هالشهر'),
+            style: _t(context, 12, FontWeight.w700, Colors.white),
+          ),
         ),
       ],
     ),
@@ -180,7 +249,10 @@ class _Action extends StatelessWidget {
       Container(
         width: 62,
         height: 62,
-        decoration: BoxDecoration(color: _surface(context), borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(
+          color: _surface(context),
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: Icon(icon, color: _green, size: 26),
       ),
       const SizedBox(height: 6),
@@ -199,14 +271,20 @@ class _Panel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(18),
-    decoration: BoxDecoration(color: _surface(context), borderRadius: BorderRadius.circular(22)),
+    decoration: BoxDecoration(
+      color: _surface(context),
+      borderRadius: BorderRadius.circular(22),
+    ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Expanded(child: Text(title, style: _t(context, 16, FontWeight.w800))),
-            if (trailing != null) Text(trailing!, style: _t(context, 13, FontWeight.w700, _green)),
+            Expanded(
+              child: Text(title, style: _t(context, 16, FontWeight.w800)),
+            ),
+            if (trailing != null)
+              Text(trailing!, style: _t(context, 13, FontWeight.w700, _green)),
           ],
         ),
         const SizedBox(height: 12),
@@ -229,7 +307,10 @@ class _TxnTile extends StatelessWidget {
         Container(
           width: 46,
           height: 46,
-          decoration: BoxDecoration(color: Color(t.color).withValues(alpha: 0.15), borderRadius: BorderRadius.circular(14)),
+          decoration: BoxDecoration(
+            color: Color(t.color).withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(14),
+          ),
           child: Icon(t.icon, color: Color(t.color)),
         ),
         const SizedBox(width: 12),
@@ -239,12 +320,17 @@ class _TxnTile extends StatelessWidget {
             children: [
               Text(t.title, style: _t(context, 15, FontWeight.w700)),
               const SizedBox(height: 2),
-              Text(t.subtitle, style: _t(context, 12, FontWeight.w400, _muted(context))),
+              Text(
+                t.subtitle,
+                style: _t(context, 12, FontWeight.w400, _muted(context)),
+              ),
             ],
           ),
         ),
-        Text(money(context, t.amount, sign: true),
-            style: _t(context, 15, FontWeight.w800, t.amount > 0 ? _green : null)),
+        Text(
+          money(context, t.amount, sign: true),
+          style: _t(context, 15, FontWeight.w800, t.amount > 0 ? _green : null),
+        ),
       ],
     ),
   );
@@ -257,7 +343,9 @@ class _BarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final days = _ar(context) ? ['سب', 'أح', 'إث', 'ثل', 'أر', 'خم', 'جم'] : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    final days = _ar(context)
+        ? ['سب', 'أح', 'إث', 'ثل', 'أر', 'خم', 'جم']
+        : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     final maxV = values.fold(1.0, math.max);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -276,7 +364,10 @@ class _BarChart extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(days[i], style: _t(context, 12, FontWeight.w600, _muted(context))),
+                Text(
+                  days[i],
+                  style: _t(context, 12, FontWeight.w600, _muted(context)),
+                ),
               ],
             ),
           ),
@@ -291,7 +382,9 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final api = context.watch<WalletModel>().api;
-    final chips = _ar(context) ? ['الكل', 'دخل', 'مصاريف', 'تحويلات'] : ['All', 'Income', 'Spending', 'Transfers'];
+    final chips = _ar(context)
+        ? ['الكل', 'دخل', 'مصاريف', 'تحويلات']
+        : ['All', 'Income', 'Spending', 'Transfers'];
     return _Shell(
       index: 1,
       title: _tr(context, 'Activity', 'العمليات'),
@@ -301,23 +394,45 @@ class ActivityScreen extends StatelessWidget {
           Container(
             height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 14),
-            decoration: BoxDecoration(color: _surface(context), borderRadius: BorderRadius.circular(16)),
-            child: Row(children: [
-              Icon(Icons.search_rounded, color: _muted(context)),
-              const SizedBox(width: 8),
-              Text(_tr(context, 'Search transactions', 'دوّر بالعمليات'), style: _t(context, 14, FontWeight.w400, _muted(context))),
-            ]),
+            decoration: BoxDecoration(
+              color: _surface(context),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.search_rounded, color: _muted(context)),
+                const SizedBox(width: 8),
+                Text(
+                  _tr(context, 'Search transactions', 'دوّر بالعمليات'),
+                  style: _t(context, 14, FontWeight.w400, _muted(context)),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 14),
-          Wrap(spacing: 8, children: [
-            for (var i = 0; i < chips.length; i++)
-              ChoiceChip(label: Text(chips[i]), selected: i == 0, onSelected: (_) {}, showCheckmark: false),
-          ]),
+          Wrap(
+            spacing: 8,
+            children: [
+              for (var i = 0; i < chips.length; i++)
+                ChoiceChip(
+                  label: Text(chips[i]),
+                  selected: i == 0,
+                  onSelected: (_) {},
+                  showCheckmark: false,
+                ),
+            ],
+          ),
           const SizedBox(height: 10),
-          Text(_tr(context, 'Today', 'اليوم'), style: _t(context, 13, FontWeight.w700, _muted(context))),
+          Text(
+            _tr(context, 'Today', 'اليوم'),
+            style: _t(context, 13, FontWeight.w700, _muted(context)),
+          ),
           for (final t in api.transactions.take(4)) _TxnTile(t),
           const SizedBox(height: 10),
-          Text(_tr(context, 'Yesterday', 'مبارح'), style: _t(context, 13, FontWeight.w700, _muted(context))),
+          Text(
+            _tr(context, 'Yesterday', 'مبارح'),
+            style: _t(context, 13, FontWeight.w700, _muted(context)),
+          ),
           for (final t in api.transactions.skip(4)) _TxnTile(t),
         ],
       ),
@@ -337,15 +452,33 @@ class CardsScreen extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
         children: [
-          for (final c in api.cards) ...[_BankCard(c), const SizedBox(height: 14)],
+          for (final c in api.cards) ...[
+            _BankCard(c),
+            const SizedBox(height: 14),
+          ],
           const SizedBox(height: 4),
           _Panel(
             title: _tr(context, 'Card settings', 'إعدادات البطاقة'),
-            child: Column(children: [
-              _Switch(Icons.lock_outline_rounded, _tr(context, 'Freeze card', 'تجميد البطاقة'), false),
-              _Switch(Icons.language_rounded, _tr(context, 'Online payments', 'الدفع أونلاين'), true, key: const ValueKey('online')),
-              _Switch(Icons.contactless_rounded, _tr(context, 'Contactless', 'الدفع بدون لمس'), true),
-            ]),
+            child: Column(
+              children: [
+                _Switch(
+                  Icons.lock_outline_rounded,
+                  _tr(context, 'Freeze card', 'تجميد البطاقة'),
+                  false,
+                ),
+                _Switch(
+                  Icons.language_rounded,
+                  _tr(context, 'Online payments', 'الدفع أونلاين'),
+                  true,
+                  key: const ValueKey('online'),
+                ),
+                _Switch(
+                  Icons.contactless_rounded,
+                  _tr(context, 'Contactless', 'الدفع بدون لمس'),
+                  true,
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -363,12 +496,14 @@ class _Switch extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(children: [
-      Icon(icon, color: _muted(context)),
-      const SizedBox(width: 12),
-      Expanded(child: Text(label, style: _t(context, 15, FontWeight.w600))),
-      Switch(value: value, onChanged: (_) {}),
-    ]),
+    child: Row(
+      children: [
+        Icon(icon, color: _muted(context)),
+        const SizedBox(width: 12),
+        Expanded(child: Text(label, style: _t(context, 15, FontWeight.w600))),
+        Switch(value: value, onChanged: (_) {}),
+      ],
+    ),
   );
 }
 
@@ -384,30 +519,59 @@ class _BankCard extends StatelessWidget {
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(colors: [for (final x in c.colors) Color(x)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        gradient: LinearGradient(
+          colors: [for (final x in c.colors) Color(x)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
       ),
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(children: [
-              Container(
-                width: 44,
-                height: 32,
-                decoration: BoxDecoration(color: const Color(0xFFE9C46A), borderRadius: BorderRadius.circular(6)),
-              ),
-              const Spacer(),
-              const Icon(Icons.contactless_rounded, color: Colors.white, size: 28),
-            ]),
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE9C46A),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                const Spacer(),
+                const Icon(
+                  Icons.contactless_rounded,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ],
+            ),
             const Spacer(),
-            Text('••••  ••••  ••••  ${c.last4}', style: _t(context, 20, FontWeight.w700, Colors.white).copyWith(letterSpacing: 1.5)),
+            Text(
+              '••••  ••••  ••••  ${c.last4}',
+              style: _t(
+                context,
+                20,
+                FontWeight.w700,
+                Colors.white,
+              ).copyWith(letterSpacing: 1.5),
+            ),
             const SizedBox(height: 14),
-            Row(children: [
-              Text(c.holder, style: _t(context, 14, FontWeight.w600, Colors.white)),
-              const Spacer(),
-              Text(c.expiry, style: _t(context, 14, FontWeight.w600, Colors.white70)),
-            ]),
+            Row(
+              children: [
+                Text(
+                  c.holder,
+                  style: _t(context, 14, FontWeight.w600, Colors.white),
+                ),
+                const Spacer(),
+                Text(
+                  c.expiry,
+                  style: _t(context, 14, FontWeight.w600, Colors.white70),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -432,13 +596,33 @@ class InsightsScreen extends StatelessWidget {
             title: _tr(context, 'Spending in October', 'مصاريف أكتوبر'),
             child: SizedBox(
               height: 230,
-              child: Stack(alignment: Alignment.center, children: [
-                CustomPaint(size: const Size(210, 210), painter: _Donut(api.spending)),
-                Column(mainAxisSize: MainAxisSize.min, children: [
-                  Text(money(context, total), style: _t(context, 26, FontWeight.w800)),
-                  Text(_tr(context, 'spent', 'مصروف'), style: _t(context, 13, FontWeight.w500, _muted(context))),
-                ]),
-              ]),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomPaint(
+                    size: const Size(210, 210),
+                    painter: _Donut(api.spending),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        money(context, total),
+                        style: _t(context, 26, FontWeight.w800),
+                      ),
+                      Text(
+                        _tr(context, 'spent', 'مصروف'),
+                        style: _t(
+                          context,
+                          13,
+                          FontWeight.w500,
+                          _muted(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 14),
@@ -446,15 +630,31 @@ class InsightsScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(color: _surface(context), borderRadius: BorderRadius.circular(18)),
-              child: Row(children: [
-                CircleAvatar(radius: 7, backgroundColor: Color(c.color)),
-                const SizedBox(width: 12),
-                Expanded(child: Text(c.name, style: _t(context, 15, FontWeight.w700))),
-                Text('${(c.amount / total * 100).round()}%', style: _t(context, 13, FontWeight.w600, _muted(context))),
-                const SizedBox(width: 12),
-                Text(money(context, c.amount), style: _t(context, 15, FontWeight.w800)),
-              ]),
+              decoration: BoxDecoration(
+                color: _surface(context),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(radius: 7, backgroundColor: Color(c.color)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      c.name,
+                      style: _t(context, 15, FontWeight.w700),
+                    ),
+                  ),
+                  Text(
+                    '${(c.amount / total * 100).round()}%',
+                    style: _t(context, 13, FontWeight.w600, _muted(context)),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    money(context, c.amount),
+                    style: _t(context, 15, FontWeight.w800),
+                  ),
+                ],
+              ),
             ),
         ],
       ),
@@ -475,11 +675,17 @@ class _Donut extends CustomPainter {
     final rect = Offset.zero & size;
     for (final p in parts) {
       final sweep = p.amount / total * math.pi * 2;
-      canvas.drawArc(rect.deflate(14), start + 0.04, sweep - 0.08, false, Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 26
-        ..strokeCap = StrokeCap.round
-        ..color = Color(p.color));
+      canvas.drawArc(
+        rect.deflate(14),
+        start + 0.04,
+        sweep - 0.08,
+        false,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 26
+          ..strokeCap = StrokeCap.round
+          ..color = Color(p.color),
+      );
       start += sweep;
     }
   }

@@ -24,7 +24,8 @@ class ApiProductsRepo implements ProductsRepo {
   Future<List<CartItem>> cart() async => const [];
 
   @override
-  Future<Order> activeOrder() => Future.error(StateError('No backend in the example'));
+  Future<Order> activeOrder() =>
+      Future.error(StateError('No backend in the example'));
 }
 
 class ApiUserRepo implements UserRepo {
@@ -35,12 +36,21 @@ class ApiUserRepo implements UserRepo {
 final productsRepo = Provider<ProductsRepo>((ref) => ApiProductsRepo());
 final userRepo = Provider<UserRepo>((ref) => ApiUserRepo());
 
-final productsProvider = FutureProvider<List<Product>>((ref) => ref.watch(productsRepo).all());
-final cartProvider = FutureProvider<List<CartItem>>((ref) => ref.watch(productsRepo).cart());
-final orderProvider = FutureProvider<Order>((ref) => ref.watch(productsRepo).activeOrder());
+final productsProvider = FutureProvider<List<Product>>(
+  (ref) => ref.watch(productsRepo).all(),
+);
+final cartProvider = FutureProvider<List<CartItem>>(
+  (ref) => ref.watch(productsRepo).cart(),
+);
+final orderProvider = FutureProvider<Order>(
+  (ref) => ref.watch(productsRepo).activeOrder(),
+);
 final userProvider = FutureProvider<User>((ref) => ref.watch(userRepo).me());
 
-final productProvider = FutureProvider.family<Product?, String>((ref, id) async {
+final productProvider = FutureProvider.family<Product?, String>((
+  ref,
+  id,
+) async {
   final all = await ref.watch(productsProvider.future);
   for (final p in all) {
     if (p.id == id) return p;

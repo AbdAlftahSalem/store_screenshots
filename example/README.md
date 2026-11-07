@@ -4,8 +4,8 @@ A small shop app (Riverpod, English + Arabic) that generates its own App Store a
 
 ```bash
 flutter pub get
-dart run store_shots                  # 4 screens × en/ar × iPhone 6.9" + Android phone
-dart run store_shots --template all   # every template, into build/store_shots/variants/
+dart run store_screenshots                  # 4 screens × en/ar × iPhone 6.9" + Android phone
+dart run store_screenshots --template all   # every template, into build/store_shots/variants/
 ```
 
 - `store_shots.yaml`: screens, devices, highlights.

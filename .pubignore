@@ -1,5 +1,12 @@
+# Not part of the published package (they stay in the GitHub repo).
 test_app/
 tool/
+.github/
 build/
 example/build/
-.github/
+example/.dart_tool/
+**/.dart_tool/
+**/pubspec.lock
+*.iml
+.idea/
+.vscode/

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
-import 'package:store_shots/store_shots.dart';
+import 'package:store_screenshots/store_screenshots.dart';
 import 'package:store_shots_example/main.dart';
 import 'package:store_shots_example/src/data.dart';
 import 'package:store_shots_example/src/models.dart';
@@ -11,7 +11,8 @@ void main() => storeShots<Override>(
     productsRepo.overrideWithValue(FakeProductsRepo(locale)),
     userRepo.overrideWithValue(FakeUserRepo(locale == 'ar' ? 'أحمد' : 'Sarah')),
   ],
-  app: (overrides) => ProviderScope(overrides: overrides, child: const ShopApp()),
+  app: (overrides) =>
+      ProviderScope(overrides: overrides, child: const ShopApp()),
 );
 
 class FakeUserRepo implements UserRepo {
@@ -30,26 +31,43 @@ class FakeProductsRepo implements ProductsRepo {
 
   bool get ar => locale == 'ar';
 
-  Product _p(String id, String en, String arName, double price, double rating, int reviews,
-          {double? old, String descEn = '', String descAr = ''}) =>
-      Product(
-        id: id,
-        name: ar ? arName : en,
-        category: '',
-        price: price,
-        oldPrice: old,
-        image: 'assets/products/$id.jpg',
-        rating: rating,
-        reviews: reviews,
-        description: ar ? descAr : descEn,
-      );
+  Product _p(
+    String id,
+    String en,
+    String arName,
+    double price,
+    double rating,
+    int reviews, {
+    double? old,
+    String descEn = '',
+    String descAr = '',
+  }) => Product(
+    id: id,
+    name: ar ? arName : en,
+    category: '',
+    price: price,
+    oldPrice: old,
+    image: 'assets/products/$id.jpg',
+    rating: rating,
+    reviews: reviews,
+    description: ar ? descAr : descEn,
+  );
 
   @override
   Future<List<Product>> all() async => [
-    _p('headphones', 'Wireless Headphones', 'سماعة لاسلكية', 89.00, 4.8, 2140,
-        old: 129.00,
-        descEn: 'Soft memory-foam cushions, 40-hour battery and active noise cancelling that lets the music do the talking.',
-        descAr: 'وسائد ناعمة، بطارية بتدوم 40 ساعة، وعزل للضوضاء بخليك تسمع الموسيقى وبس.'),
+    _p(
+      'headphones',
+      'Wireless Headphones',
+      'سماعة لاسلكية',
+      89.00,
+      4.8,
+      2140,
+      old: 129.00,
+      descEn:
+          'Soft memory-foam cushions, 40-hour battery and active noise cancelling that lets the music do the talking.',
+      descAr:
+          'وسائد ناعمة، بطارية بتدوم 40 ساعة، وعزل للضوضاء بخليك تسمع الموسيقى وبس.',
+    ),
     _p('watch', 'Smart Watch S2', 'ساعة ذكية S2', 129.00, 4.7, 980),
     _p('sneakers', 'Air Runner', 'حذاء رياضي', 74.50, 4.6, 1320),
     _p('backpack', 'Canvas Backpack', 'شنطة ظهر', 58.00, 4.9, 640),

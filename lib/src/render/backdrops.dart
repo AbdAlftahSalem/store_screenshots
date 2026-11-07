@@ -73,11 +73,12 @@ class BackdropPainter extends CustomPainter {
         c,
         r,
         Paint()
-          ..shader = ui.Gradient.radial(c, r, [
-            color.withValues(alpha: opacity),
-            color.withValues(alpha: opacity * 0.45),
-            color.withValues(alpha: 0),
-          ], const [0, 0.45, 1]),
+          ..shader = ui.Gradient.radial(
+            c,
+            r,
+            [color.withValues(alpha: opacity), color.withValues(alpha: opacity * 0.45), color.withValues(alpha: 0)],
+            const [0, 0.45, 1],
+          ),
       );
     }
 
@@ -110,11 +111,12 @@ class BackdropPainter extends CustomPainter {
       case BackdropKind.gradient:
         base();
         final streak = Paint()
-          ..shader = ui.Gradient.linear(Offset(0, h * 0.2), Offset(w, h * 0.6), [
-            const Color(0x00FFFFFF),
-            const Color(0x26FFFFFF),
-            const Color(0x00FFFFFF),
-          ], const [0.2, 0.5, 0.8]);
+          ..shader = ui.Gradient.linear(
+            Offset(0, h * 0.2),
+            Offset(w, h * 0.6),
+            [const Color(0x00FFFFFF), const Color(0x26FFFFFF), const Color(0x00FFFFFF)],
+            const [0.2, 0.5, 0.8],
+          );
         canvas.save();
         canvas.translate(w * 0.5, h * 0.5);
         canvas.rotate(-0.5 + seed * 0.08);
@@ -152,18 +154,25 @@ class BackdropPainter extends CustomPainter {
         canvas.drawPath(
           beam,
           Paint()
-            ..shader = ui.Gradient.linear(Offset(0, 0), Offset(0, h), [
-              const Color(0x40BFD4FF),
-              const Color(0x0FBFD4FF),
-              const Color(0x00BFD4FF),
-            ], const [0, 0.55, 1])
+            ..shader = ui.Gradient.linear(
+              Offset(0, 0),
+              Offset(0, h),
+              [const Color(0x40BFD4FF), const Color(0x0FBFD4FF), const Color(0x00BFD4FF)],
+              const [0, 0.55, 1],
+            )
             ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.04),
         );
         blob(Offset(w * 0.5, 0), w * 0.6, const Color(0xFFFFFFFF), 0.16);
         blob(Offset(w * 0.5, h * 0.98), w * 0.9, const Color(0xFF3B5BDB), 0.35);
       case BackdropKind.pastel:
         base();
-        final palette = [const Color(0xFFFFC8DD), const Color(0xFFBDE0FE), const Color(0xFFCDEAC0), const Color(0xFFFFE5A5), const Color(0xFFD7C5F5)];
+        final palette = [
+          const Color(0xFFFFC8DD),
+          const Color(0xFFBDE0FE),
+          const Color(0xFFCDEAC0),
+          const Color(0xFFFFE5A5),
+          const Color(0xFFD7C5F5),
+        ];
         blob(Offset(w * jitter(0.05), h * jitter(0.25)), w * 0.7, palette[seed % 5], 1);
         blob(Offset(w * jitter(0.95), h * jitter(0.55)), w * 0.75, palette[(seed + 1) % 5], 1);
         blob(Offset(w * jitter(0.2), h * jitter(0.92)), w * 0.7, palette[(seed + 2) % 5], 1);
@@ -182,13 +191,19 @@ class BackdropPainter extends CustomPainter {
         }
         canvas.drawPath(sq, ink);
         _star(canvas, Offset(w * (seed.isEven ? 0.88 : 0.12), h * 0.47), w * 0.035, const Color(0xFFFFB703));
-        canvas.drawCircle(Offset(w * (seed.isEven ? 0.1 : 0.9), h * 0.62), w * 0.022,
-            Paint()..color = const Color(0xFFFB6F92));
-        canvas.drawCircle(Offset(w * (seed.isEven ? 0.92 : 0.08), h * 0.82), w * 0.03,
-            Paint()
-              ..color = const Color(0xFF4CC9F0)
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = w * 0.01);
+        canvas.drawCircle(
+          Offset(w * (seed.isEven ? 0.1 : 0.9), h * 0.62),
+          w * 0.022,
+          Paint()..color = const Color(0xFFFB6F92),
+        );
+        canvas.drawCircle(
+          Offset(w * (seed.isEven ? 0.92 : 0.08), h * 0.82),
+          w * 0.03,
+          Paint()
+            ..color = const Color(0xFF4CC9F0)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = w * 0.01,
+        );
     }
   }
 

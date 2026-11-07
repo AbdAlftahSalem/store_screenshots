@@ -77,9 +77,8 @@ class DeviceSpec {
   ///
   /// Framed shots use the real device screen. Frameless shots fill the
   /// whole store image, so the app is rendered at the output aspect ratio.
-  ({double width, double height}) appSize({required bool framed}) => framed
-      ? (width: screenWidth, height: screenHeight)
-      : (width: width / pixelRatio, height: height / pixelRatio);
+  ({double width, double height}) appSize({required bool framed}) =>
+      framed ? (width: screenWidth, height: screenHeight) : (width: width / pixelRatio, height: height / pixelRatio);
 
   @override
   String toString() => '$label ($width×$height)';

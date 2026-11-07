@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:store_shots/src/core/catalog.dart';
-import 'package:store_shots/src/core/config.dart';
-import 'package:store_shots/src/core/devices.dart';
+import 'package:store_screenshots/src/core/catalog.dart';
+import 'package:store_screenshots/src/core/config.dart';
+import 'package:store_screenshots/src/core/devices.dart';
 
 const _testFile = 'test/store_shots_test.dart';
 
@@ -45,8 +45,10 @@ Future<void> main(List<String> argv) async {
     case 'devices':
       stdout.writeln('Devices (devices: [...] in store_shots.yaml):\n');
       for (final d in kDevices.values) {
-        stdout.writeln('  ${d.id.padRight(18)} ${d.label.padRight(20)} ${d.width}×${d.height}  '
-            '${d.store == Store.ios ? 'App Store' : 'Google Play'}');
+        stdout.writeln(
+          '  ${d.id.padRight(18)} ${d.label.padRight(20)} ${d.width}×${d.height}  '
+          '${d.store == Store.ios ? 'App Store' : 'Google Play'}',
+        );
       }
     case 'frames':
       stdout.writeln('Frames (frames: {ios: model/color, android: model/color}):\n');
@@ -59,14 +61,14 @@ Future<void> main(List<String> argv) async {
 }
 
 String _usage(ArgParser p) => '''
-store_shots: App Store & Google Play screenshots from flutter test
+store_screenshots: App Store & Google Play screenshots from flutter test
 
 Usage:
-  dart run store_shots            Generate everything in store_shots.yaml
-  dart run store_shots init       Create store_shots.yaml, the test file and a caption file
-  dart run store_shots templates  List templates
-  dart run store_shots devices    List devices and their store sizes
-  dart run store_shots frames     List device frames and colors
+  dart run store_screenshots            Generate everything in store_shots.yaml
+  dart run store_screenshots init       Create store_shots.yaml, the test file and a caption file
+  dart run store_screenshots templates  List templates
+  dart run store_screenshots devices    List devices and their store sizes
+  dart run store_screenshots frames     List device frames and colors
 
 Options:
 ${p.usage}''';
@@ -86,7 +88,7 @@ Future<void> _run(ArgResults args) async {
   }
   final testPath = args['test'] as String;
   if (!File(testPath).existsSync()) {
-    _fail('$testPath not found. Run `dart run store_shots init` to create it, or pass --test <file>.');
+    _fail('$testPath not found. Run `dart run store_screenshots init` to create it, or pass --test <file>.');
   }
   final env = <String, String>{if (configPath != 'store_shots.yaml') 'STORE_SHOTS_CONFIG': configPath};
   void filter(String opt, String name) {
@@ -100,13 +102,19 @@ Future<void> _run(ArgResults args) async {
   filter('screens', 'STORE_SHOTS_SCREENS');
 
   final devices = cfg.devices.map((d) => d.id).join(', ');
-  stdout.writeln('▶ store_shots: ${_n(cfg.screens.length, 'screen')} × ${_n(cfg.locales.length, 'locale')} '
-      '(${cfg.locales.join(', ')}) × ${_n(cfg.devices.length, 'device')} ($devices) · '
-      'template: ${env['STORE_SHOTS_TEMPLATES'] ?? cfg.templates.join(', ')}');
+  stdout.writeln(
+    '▶ store_shots: ${_n(cfg.screens.length, 'screen')} × ${_n(cfg.locales.length, 'locale')} '
+    '(${cfg.locales.join(', ')}) × ${_n(cfg.devices.length, 'device')} ($devices) · '
+    'template: ${env['STORE_SHOTS_TEMPLATES'] ?? cfg.templates.join(', ')}',
+  );
   final sw = Stopwatch()..start();
   final flutter = Platform.isWindows ? 'flutter.bat' : 'flutter';
-  final process = await Process.start(flutter, ['test', testPath, '--reporter', 'expanded', '--no-pub'],
-      environment: env, runInShell: Platform.isWindows);
+  final process = await Process.start(
+    flutter,
+    ['test', testPath, '--reporter', 'expanded', '--no-pub'],
+    environment: env,
+    runInShell: Platform.isWindows,
+  );
   final verbose = args['verbose'] as bool;
   var summary = <String>[];
   var inSummary = false;
@@ -172,7 +180,7 @@ void _init(ArgResults args) {
   final pkg = _packageName();
   create(args['config'] as String, '''
 # store_shots.yaml (everything except screens is optional)
-# dart run store_shots templates | devices | frames  lists the choices.
+# dart run store_screenshots templates | devices | frames  lists the choices.
 template: aurora
 devices: [iphone_6_9, android_phone]
 screens:
@@ -187,7 +195,7 @@ screens:
 }
 ''');
   create(args['test'] as String, '''
-import 'package:store_shots/store_shots.dart';
+import 'package:store_screenshots/store_screenshots.dart';
 ${pkg == null ? "// import 'package:your_app/main.dart';" : "import 'package:$pkg/main.dart';"}
 
 void main() => storeShots(
@@ -199,7 +207,7 @@ void main() => storeShots(
   if (created.isNotEmpty) {
     stdout.writeln('✔ Created:\n${created.map((c) => '  • $c').join('\n')}');
   }
-  stdout.writeln('\nNext: list your screens in store_shots.yaml, then run `dart run store_shots`.');
+  stdout.writeln('\nNext: list your screens in store_shots.yaml, then run `dart run store_screenshots`.');
 }
 
 String? _packageName() {

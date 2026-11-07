@@ -208,7 +208,7 @@ class StoreShotsConfig {
   static StoreShotsConfig load(String path, {String? projectDir}) {
     final file = File(path);
     if (!file.existsSync()) {
-      throw ConfigException('file not found at "$path". Run `dart run store_shots init` to create one.');
+      throw ConfigException('file not found at "$path". Run `dart run store_screenshots init` to create one.');
     }
     return parse(file.readAsStringSync(), projectDir: projectDir ?? file.parent.path);
   }
@@ -223,9 +223,26 @@ class StoreShotsConfig {
     }
     final map = doc == null ? <String, Object?>{} : _asMap(doc, 'top level');
     _checkKeys(map, const {
-      'app_name', 'output', 'locales', 'devices', 'template', 'templates', 'theme', 'frame', 'frames',
-      'status_bar', 'background', 'accent', 'caption_color', 'screens', 'captions', 'feature_graphic',
-      'tagline', 'platform', 'store_locales', 'wait_ms',
+      'app_name',
+      'output',
+      'locales',
+      'devices',
+      'template',
+      'templates',
+      'theme',
+      'frame',
+      'frames',
+      'status_bar',
+      'background',
+      'accent',
+      'caption_color',
+      'screens',
+      'captions',
+      'feature_graphic',
+      'tagline',
+      'platform',
+      'store_locales',
+      'wait_ms',
     }, 'top level');
 
     final captionsDir = _string(map['captions'], 'captions') ?? _findCaptionsDir(projectDir);
@@ -246,8 +263,11 @@ class StoreShotsConfig {
     if (deviceIds.isEmpty) throw ConfigException('devices: list at least one device.');
     final devices = [
       for (final id in deviceIds)
-        kDevices[id] ?? (throw ConfigException('unknown device "$id".${_suggest(id, kDevices.keys)} '
-            'Known: ${kDevices.keys.join(', ')}.')),
+        kDevices[id] ??
+            (throw ConfigException(
+              'unknown device "$id".${_suggest(id, kDevices.keys)} '
+              'Known: ${kDevices.keys.join(', ')}.',
+            )),
     ];
 
     final templates = <String>[];
@@ -266,7 +286,9 @@ class StoreShotsConfig {
 
     final themes = _stringList(map['theme'], 'theme') ?? const ['light'];
     for (final th in themes) {
-      if (th != 'light' && th != 'dark') throw ConfigException('theme must be light, dark or [light, dark], got "$th".');
+      if (th != 'light' && th != 'dark') {
+        throw ConfigException('theme must be light, dark or [light, dark], got "$th".');
+      }
     }
 
     var frame = true;
@@ -301,11 +323,7 @@ class StoreShotsConfig {
       if (battery is! int || battery < 0 || battery > 100) {
         throw ConfigException('status_bar.battery must be a number from 0 to 100.');
       }
-      statusBar = StatusBarConfig(
-        enabled: m['enabled'] != false,
-        time: '${m['time'] ?? '9:41'}',
-        battery: battery,
-      );
+      statusBar = StatusBarConfig(enabled: m['enabled'] != false, time: '${m['time'] ?? '9:41'}', battery: battery);
     }
 
     BackgroundConfig? background;
@@ -340,10 +358,14 @@ class StoreShotsConfig {
       if (!ids.add(s.id)) throw ConfigException('screen id "${s.id}" is used twice.');
     }
     if (screens.length > 8 && devices.any((d) => d.store == Store.android)) {
-      throw ConfigException('Google Play allows at most 8 screenshots per device type; you listed ${screens.length} screens.');
+      throw ConfigException(
+        'Google Play allows at most 8 screenshots per device type; you listed ${screens.length} screens.',
+      );
     }
     if (screens.length > 10) {
-      throw ConfigException('the App Store allows at most 10 screenshots per device size; you listed ${screens.length}.');
+      throw ConfigException(
+        'the App Store allows at most 10 screenshots per device size; you listed ${screens.length}.',
+      );
     }
 
     final platform = _string(map['platform'], 'platform') ?? 'auto';
@@ -406,14 +428,18 @@ FrameChoice parseFrameChoice(String value, String where) {
   final parts = value.split(RegExp(r'[/:]'));
   final model = kFrameModels[parts.first.trim()];
   if (model == null) {
-    throw ConfigException('$where: unknown frame "${parts.first}".${_suggest(parts.first, kFrameModels.keys)} '
-        'Known: ${kFrameModels.keys.join(', ')}.');
+    throw ConfigException(
+      '$where: unknown frame "${parts.first}".${_suggest(parts.first, kFrameModels.keys)} '
+      'Known: ${kFrameModels.keys.join(', ')}.',
+    );
   }
   if (parts.length < 2) return FrameChoice(model, model.finishes.first);
   final finish = model.finish(parts[1].trim());
   if (finish == null) {
-    throw ConfigException('$where: ${model.id} has no color "${parts[1]}". '
-        'Colors: ${model.finishes.map((f) => f.name).join(', ')}.');
+    throw ConfigException(
+      '$where: ${model.id} has no color "${parts[1]}". '
+      'Colors: ${model.finishes.map((f) => f.name).join(', ')}.',
+    );
   }
   return FrameChoice(model, finish);
 }
@@ -518,9 +544,7 @@ String _findCaptionsDir(String projectDir) {
 List<String> _localesFromArb(String projectDir, String captionsDir) {
   final d = Directory('$projectDir/$captionsDir');
   if (!d.existsSync()) return [];
-  final found = <String>[
-    for (final e in d.listSync()) ?_arbLocale(e.path),
-  ]..sort();
+  final found = <String>[for (final e in d.listSync()) ?_arbLocale(e.path)]..sort();
   // English first: it is usually the primary store listing.
   if (found.remove('en')) found.insert(0, 'en');
   return found;

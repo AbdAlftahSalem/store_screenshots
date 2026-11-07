@@ -329,11 +329,21 @@ class CaptionLayout {
   }
 
   // A single long word wider than the box would be split mid-word; shrink instead.
-  static bool _breaksWords(String headline, TextPainter tp, double maxWidth, double size, TemplateStyle style, bool rtl) {
+  static bool _breaksWords(
+    String headline,
+    TextPainter tp,
+    double maxWidth,
+    double size,
+    TemplateStyle style,
+    bool rtl,
+  ) {
     for (final word in plainCaption(headline).split(RegExp(r'\s+'))) {
       if (word.isEmpty) continue;
       final w = TextPainter(
-        text: TextSpan(text: word, style: _font(rtl).copyWith(fontSize: size, fontWeight: style.weight)),
+        text: TextSpan(
+          text: word,
+          style: _font(rtl).copyWith(fontSize: size, fontWeight: style.weight),
+        ),
         textDirection: TextDirection.ltr,
       )..layout();
       if (w.width > maxWidth) return true;
@@ -375,7 +385,10 @@ TextSpan captionSpan(String raw, TemplateStyle style, double size, bool rtl) {
     style: base,
     children: [
       for (final s in parseCaption(raw))
-        TextSpan(text: s.text, style: s.emphasis ? TextStyle(color: style.emphasis) : null),
+        TextSpan(
+          text: s.text,
+          style: s.emphasis ? TextStyle(color: style.emphasis) : null,
+        ),
     ],
   );
 }
@@ -487,14 +500,18 @@ class ShotComposer extends StatelessWidget {
             final c2 = caption(maxWidth: cardW - cardPad * 2);
             final cardH = c2.height + cardPad * 1.6;
             final left = (w - cardW) / 2;
-            children.add(Positioned(
-              left: left,
-              top: y,
-              width: cardW,
-              height: cardH,
-              child: _GlassCard(radius: w * 0.06),
-            ));
-            children.add(captionAt(c2, Offset(left + cardPad, y + cardPad * 0.8), cardW - cardPad * 2, TextAlign.center));
+            children.add(
+              Positioned(
+                left: left,
+                top: y,
+                width: cardW,
+                height: cardH,
+                child: _GlassCard(radius: w * 0.06),
+              ),
+            );
+            children.add(
+              captionAt(c2, Offset(left + cardPad, y + cardPad * 0.8), cardW - cardPad * 2, TextAlign.center),
+            );
             y += cardH + h * 0.035;
           } else {
             children.add(captionAt(c, Offset(sidePad, y), w - sidePad * 2, st.align));
@@ -506,14 +523,18 @@ class ShotComposer extends StatelessWidget {
         final maxDH = h - y - h * 0.03;
         final fit = fitAspect(aspect, maxDW, maxDH);
         final dx = (w - fit.width) / 2;
-        final angle = st.layout == TemplateLayout.playful ? (scene.rtl ? 1 : -1) * (scene.index.isEven ? 0.06 : -0.045) : 0.0;
-        children.add(Positioned(
-          left: dx,
-          top: y,
-          width: fit.width,
-          height: fit.height,
-          child: Transform.rotate(angle: angle, child: spotlight ? dimmedFrame(scene.index) : main),
-        ));
+        final angle = st.layout == TemplateLayout.playful
+            ? (scene.rtl ? 1 : -1) * (scene.index.isEven ? 0.06 : -0.045)
+            : 0.0;
+        children.add(
+          Positioned(
+            left: dx,
+            top: y,
+            width: fit.width,
+            height: fit.height,
+            child: Transform.rotate(angle: angle, child: spotlight ? dimmedFrame(scene.index) : main),
+          ),
+        );
         if (spotlight && scene.shot.highlight != null) {
           children.addAll(_spotlightCallout(Rect.fromLTWH(dx, y, fit.width, fit.height), main, w));
         }
@@ -523,13 +544,9 @@ class ShotComposer extends StatelessWidget {
         final y = topPad * 1.1 + (hasCaption ? c.height + h * 0.045 : 0);
         final dw = w * (tablet ? 0.8 : 0.86);
         final dh = dw / aspect;
-        children.add(Positioned(
-          left: (w - dw) / 2,
-          top: math.min(y, h - dh * 0.72),
-          width: dw,
-          height: dh,
-          child: main,
-        ));
+        children.add(
+          Positioned(left: (w - dw) / 2, top: math.min(y, h - dh * 0.72), width: dw, height: dh, child: main),
+        );
       case TemplateLayout.tilted:
         final c = caption(maxWidth: w - sidePad * 2);
         if (hasCaption) children.add(captionAt(c, Offset(sidePad, topPad), w - sidePad * 2, TextAlign.start));
@@ -542,13 +559,15 @@ class ShotComposer extends StatelessWidget {
           ..rotateX(0.12)
           ..rotateY(-0.42 * dir)
           ..rotateZ(0.05 * dir);
-        children.add(Positioned(
-          left: (w - dw) / 2 + w * 0.05 * dir,
-          top: y,
-          width: dw,
-          height: dh,
-          child: Transform(alignment: Alignment.topCenter, transform: m, child: main),
-        ));
+        children.add(
+          Positioned(
+            left: (w - dw) / 2 + w * 0.05 * dir,
+            top: y,
+            width: dw,
+            height: dh,
+            child: Transform(alignment: Alignment.topCenter, transform: m, child: main),
+          ),
+        );
       case TemplateLayout.duo:
         final c = caption();
         var y = topPad;
@@ -564,20 +583,27 @@ class ShotComposer extends StatelessWidget {
         final dir = scene.rtl ? -1.0 : 1.0;
         final frontLeft = scene.rtl ? w - front.width - w * 0.06 : w * 0.06;
         final backLeft = scene.rtl ? w * 0.04 : w - back.width - w * 0.04;
-        children.add(Positioned(
-          left: backLeft,
-          top: y + h * 0.05,
-          width: back.width,
-          height: back.height,
-          child: Transform.rotate(angle: 0.08 * dir, child: Opacity(opacity: 0.96, child: frameFor(next, highlight: false))),
-        ));
-        children.add(Positioned(
-          left: frontLeft,
-          top: y,
-          width: front.width,
-          height: front.height,
-          child: Transform.rotate(angle: -0.03 * dir, child: main),
-        ));
+        children.add(
+          Positioned(
+            left: backLeft,
+            top: y + h * 0.05,
+            width: back.width,
+            height: back.height,
+            child: Transform.rotate(
+              angle: 0.08 * dir,
+              child: Opacity(opacity: 0.96, child: frameFor(next, highlight: false)),
+            ),
+          ),
+        );
+        children.add(
+          Positioned(
+            left: frontLeft,
+            top: y,
+            width: front.width,
+            height: front.height,
+            child: Transform.rotate(angle: -0.03 * dir, child: main),
+          ),
+        );
       case TemplateLayout.panorama:
         // Rendered by PanoramaComposer; a single panel falls back to classic.
         final c = caption();
@@ -589,7 +615,11 @@ class ShotComposer extends StatelessWidget {
 
     return Directionality(
       textDirection: scene.direction,
-      child: SizedBox(width: w, height: h, child: Stack(clipBehavior: Clip.hardEdge, children: children)),
+      child: SizedBox(
+        width: w,
+        height: h,
+        child: Stack(clipBehavior: Clip.hardEdge, children: children),
+      ),
     );
   }
 
@@ -630,9 +660,7 @@ class ShotComposer extends StatelessWidget {
       Positioned.fill(child: CustomPaint(painter: _ConnectorPainter(onDevice, callout, scene.style.accent))),
       Positioned.fromRect(
         rect: callout,
-        child: CustomPaint(
-          painter: _ZoomPainter(shot.image, cropRect, shot.logicalWidth, scene.style.accent, w),
-        ),
+        child: CustomPaint(painter: _ZoomPainter(shot.image, cropRect, shot.logicalWidth, scene.style.accent, w)),
       ),
       if (label != null && label.isNotEmpty)
         Positioned(
@@ -694,9 +722,12 @@ class _ZoomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final r = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(w * 0.035));
-    canvas.drawRRect(r.shift(Offset(0, w * 0.02)), Paint()
-      ..color = const Color(0x88000000)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.04));
+    canvas.drawRRect(
+      r.shift(Offset(0, w * 0.02)),
+      Paint()
+        ..color = const Color(0x88000000)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.04),
+    );
     canvas.save();
     canvas.clipRRect(r);
     final px = image.width / logicalWidth;
@@ -707,10 +738,13 @@ class _ZoomPainter extends CustomPainter {
       Paint()..filterQuality = FilterQuality.high,
     );
     canvas.restore();
-    canvas.drawRRect(r, Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = w * 0.008
-      ..color = accent);
+    canvas.drawRRect(
+      r,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w * 0.008
+        ..color = accent,
+    );
   }
 
   @override
@@ -796,11 +830,7 @@ class PanoramaComposer extends StatelessWidget {
     final w = panel.width, h = panel.height;
     final tablet = first.device.tablet;
     final rtl = first.rtl;
-    final children = <Widget>[
-      Positioned.fill(
-        child: CustomPaint(painter: _PanoramaBackdrop(st, n, rtl)),
-      ),
-    ];
+    final children = <Widget>[Positioned.fill(child: CustomPaint(painter: _PanoramaBackdrop(st, n, rtl)))];
     for (var i = 0; i < n; i++) {
       final s = scenes[i];
       // Visual order: in RTL the first screen sits on the right.
@@ -817,13 +847,15 @@ class PanoramaComposer extends StatelessWidget {
       );
       final topPad = h * 0.065;
       if (s.headline.trim().isNotEmpty) {
-        children.add(Positioned(
-          left: x0 + sidePad,
-          top: topPad,
-          width: w - sidePad * 2,
-          height: c.height + 4,
-          child: CustomPaint(painter: _CaptionPainter(c, TextAlign.center, rtl)),
-        ));
+        children.add(
+          Positioned(
+            left: x0 + sidePad,
+            top: topPad,
+            width: w - sidePad * 2,
+            height: c.height + 4,
+            child: CustomPaint(painter: _CaptionPainter(c, TextAlign.center, rtl)),
+          ),
+        );
       }
       final frame = DeviceFrame(
         shot: s.shot,
@@ -840,17 +872,23 @@ class PanoramaComposer extends StatelessWidget {
       final drift = (i.isOdd ? 0.2 : -0.06) * w * (rtl ? -1 : 1);
       final angle = (i.isOdd ? 0.07 : -0.035) * (rtl ? -1 : 1);
       final shift = i == n - 1 && i.isOdd ? 0.0 : drift;
-      children.add(Positioned(
-        left: x0 + (w - fit.width) / 2 + shift,
-        top: y + (i.isOdd ? h * 0.03 : 0),
-        width: fit.width,
-        height: fit.height,
-        child: Transform.rotate(angle: angle, child: frame),
-      ));
+      children.add(
+        Positioned(
+          left: x0 + (w - fit.width) / 2 + shift,
+          top: y + (i.isOdd ? h * 0.03 : 0),
+          width: fit.width,
+          height: fit.height,
+          child: Transform.rotate(angle: angle, child: frame),
+        ),
+      );
     }
     return Directionality(
       textDirection: first.direction,
-      child: SizedBox(width: w * n, height: h, child: Stack(clipBehavior: Clip.hardEdge, children: children)),
+      child: SizedBox(
+        width: w * n,
+        height: h,
+        child: Stack(clipBehavior: Clip.hardEdge, children: children),
+      ),
     );
   }
 }
@@ -904,8 +942,7 @@ class _PanoramaBackdrop extends CustomPainter {
       canvas.drawCircle(
         c,
         pw * 0.45,
-        Paint()
-          ..shader = ui.Gradient.radial(c, pw * 0.45, [const Color(0x40FFFFFF), const Color(0x00FFFFFF)]),
+        Paint()..shader = ui.Gradient.radial(c, pw * 0.45, [const Color(0x40FFFFFF), const Color(0x00FFFFFF)]),
       );
     }
   }
